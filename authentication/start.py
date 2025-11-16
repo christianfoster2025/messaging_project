@@ -22,6 +22,7 @@ def start_screen():
     screen = start_window()
     screen.show()
     runtime.exec()
+    screen.destroy()
     return screen.chosen
     
 if __name__ == '__main__':
