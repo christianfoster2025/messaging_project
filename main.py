@@ -5,7 +5,7 @@ def main() -> None: #main programme runtime, this is the script that will actual
     password:str = ''
     userID:str = ''
     username,password = startup()
-    #end of sstage one
+    #end of stage one
     
 
 

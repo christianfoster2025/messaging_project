@@ -1,7 +1,7 @@
 import sqlite3, os.path
-from signup import signup_screen
-from login import login_screen 
-from start import start_screen
+from authentication.signup import signup_screen
+from authentication.login import login_screen 
+from authentication.start import start_screen
 
 
 def startup() -> list: 
