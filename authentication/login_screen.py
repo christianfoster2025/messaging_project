@@ -57,6 +57,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.password_entry)
 
+        self.errorlabel = QLabel(self.verticalLayoutWidget)
+        self.errorlabel.setObjectName(u"errorlabel")
+        self.errorlabel.setStyleSheet(u"color:rgb(255, 0, 0)")
+
+        self.verticalLayout.addWidget(self.errorlabel)
+
         self.submit_form = QPushButton(self.verticalLayoutWidget)
         self.submit_form.setObjectName(u"submit_form")
 
@@ -77,6 +83,7 @@ class Ui_MainWindow(object):
         self.username_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Username", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"password", None))
         self.password_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Password", None))
+        self.errorlabel.setText("")
         self.submit_form.setText(QCoreApplication.translate("MainWindow", u"login", None))
     # retranslateUi
 

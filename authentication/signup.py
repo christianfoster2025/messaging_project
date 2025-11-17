@@ -3,13 +3,15 @@ from authentication.signup_screen import Ui_MainWindow
 from main_programme.encryption import hasher
 import sys
 
-class start_window(QMainWindow):
+class signup_window(QMainWindow):
     
-    def __init__(self):
-        super(start_window,self).__init__()
+    def __init__(self,db):
+        super(signup_window,self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.submit_form.clicked.connect(self.signupcheck)
+        self.database = db
+        
         
         self.hashed_password = '' 
         self.confirm_hashed_password = ''
@@ -34,9 +36,9 @@ class start_window(QMainWindow):
                 
             
     
-def signup_screen():
+def signup_screen(db):
     runtime = QApplication(sys.argv)
-    screen = start_window()
+    screen = signup_window(db)
     screen.show()
     runtime.exec()
     runtime.shutdown()

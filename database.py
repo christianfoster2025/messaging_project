@@ -1,0 +1,65 @@
+import sqlite3, os.path
+
+class databaseinterfacer():
+    
+    def __init__(self) -> None:
+        if os.path.exists("programme.db") == False:
+            print('db doesnt exist creating now')
+            self.connector = sqlite3.connect('programme.db') #db creation
+            self.interfacer = self.connector.cursor()
+            self.interfacer.execute(''' create table users (userID TEXT, username TEXT,password TEXT, private_key TEXT,public_key TEXT)''')
+            self.interfacer.execute(''' create table messages (timestamp TEXT,senderID TEXT,receiverID TEXT, contents TEXT)''')
+            self.interfacer.execute(''' create table contacts (alias TEXT, contactID TEXT,userID TEXT, public_key TEXT, wifi_mac_address TEXT, bluetooth_mac_address TEXT)''')   
+            self.connector.commit()
+        else:
+            print('db exists')
+            self.connector = sqlite3.connect('programme.db')
+            self.interfacer = self.connector.cursor()
+            
+            
+    def loginquery(self,username:str,hashed_password:str) -> bool: # has failout prevention to prevent failout
+        try:
+            self.interfacer.execute('SELECT * FROM users WHERE username LIKE ? AND password like ?;',(username,hashed_password))
+            self.connector.commit()
+            if not self.interfacer.fetchone():
+                return False
+            else:
+                return True
+        except:
+            return False
+        
+    def signup_user_query(self,username:str) -> bool:
+        try:
+            self.interfacer.execute('SELECT * FROM users WHERE username LIKE ?',(username))
+            if not self.interfacer.fetchone():
+                return False # not present in db so can continue
+            else:
+                return True
+        except:
+               return True #if fails for any reason will return the result that requires it to be tried again
+           
+    def signup_user_entry(self,userID:str,username:str,hashed_password:str) -> bool:
+        try:
+            self.interfacer.execute('INSERT INTO users VALUES (?,?,?,?,?)',(userID,username,hashed_password,'test','test'))
+            self.connector.commit()
+            print('success')
+            return True
+        except Exception as e:
+            return e, False
+        
+    def close(self) -> None:
+        self.interfacer.close()
+        
+        
+    #INSERT INTO users (userID,username,password) \
+    #    VALUES (3,'banana','{hashtext('fruit')}')
+        
+
+
+
+if __name__ == '__main__':
+    connection = databaseinterfacer()
+    
+    #print(connection.signup_user_entry('1','paul','dsfakjsldfkasjfh'))
+    #print(connection.loginquery('paul','dsfakjsldfkasjfh'))
+    connection.close()
