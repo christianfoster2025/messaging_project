@@ -32,6 +32,7 @@ def login_screen():
     screen = start_window()
     screen.show()
     runtime.exec()
+    runtime.shutdown()
     
 if __name__ == '__main__':
     login_screen()

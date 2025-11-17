@@ -9,6 +9,7 @@ class start_window(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.choice_login.clicked.connect(lambda: self.choice('login'))
+        self.ui.choice_signup.clicked.connect(lambda: self.choice('signup'))
         self.chosen = ''
         
     def choice(self,option):
@@ -22,7 +23,7 @@ def start_screen():
     screen = start_window()
     screen.show()
     runtime.exec()
-    screen.destroy()
+    runtime.shutdown()
     return screen.chosen
     
 if __name__ == '__main__':
