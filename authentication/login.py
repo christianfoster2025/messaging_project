@@ -12,6 +12,7 @@ class login_window(QMainWindow):
         
         self.ui.submit_form.clicked.connect(self.logincheck) #connects button
         self.database = db #db link
+        
         #variables
         self.hashed_password = '' 
         self.fail_count =0 
@@ -24,9 +25,9 @@ class login_window(QMainWindow):
     def logincheck(self):
         end_of_check = False #either 5 times exceeded or success
         self.username = self.ui.username_entry.text()
-        self.password = self.ui.password_entry.text()
+        self.password = self.ui.password_entry.text() #getting text from Qlineedits
         self.hashed_password = hasher(self.password)
-        if len(self.username.strip()) ==0 or len(self.password.strip()) == 0:
+        if len(self.username.strip()) ==0 or len(self.password.strip()) == 0: #checks that they arent empty or just have empty space in
             self.ui.errorlabel.setText('missing field try again')
             self.fail_count +=1
         credential_check = self.database.loginquery(self.username,self.hashed_password)

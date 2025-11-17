@@ -83,6 +83,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="errorlabel">
+       <property name="styleSheet">
+        <string notr="true">color:rgb(255, 0, 0)</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="submit_form">
        <property name="text">
         <string>Sign up</string>

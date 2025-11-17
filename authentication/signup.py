@@ -27,12 +27,28 @@ class signup_window(QMainWindow):
         self.password = self.ui.password_entry.text()
         self.confirmpassword = self.ui.confirm_password.text()
         
-        self.hashed_password = hasher(self.password)
-        self.confirm_hashed_password = hasher(self.confirmpassword)
         
-        print(''' username: {self.username}
-            passwordhash: {self.hashed_password}
-            confirm pashwordhash: {self.confirm_hashed_password}  ''')
+        fail = False
+        if len(self.username.strip())==0 or len(self.password.strip())==0 or len(self.confirmpassword.strip())==0:
+            fail = True
+        elif self.password != self.confirmpassword:
+            fail = True
+        elif self.database.signup_user_query(self.password):
+            fail = True
+        else:
+            fail = False
+        
+        if fail: 
+            self.fail_count +=1
+        
+        if self.fail_count >=5:
+            self.close()
+        
+        
+        self.hashed_password = hasher(self.password)
+        #print(''' username: {self.username}
+        #    passwordhash: {self.hashed_password}
+        #    confirm pashwordhash: {self.confirm_hashed_password}  ''')
                 
             
     
