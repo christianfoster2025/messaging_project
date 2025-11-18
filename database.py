@@ -12,7 +12,7 @@ class databaseinterfacer():
             self.interfacer.execute(''' create table contacts (alias TEXT, contactID TEXT,userID TEXT, public_key TEXT, wifi_mac_address TEXT, bluetooth_mac_address TEXT)''')   
             self.connector.commit()
         else:
-            print('db exists')
+            #print('db exists')
             self.connector = sqlite3.connect('programme.db')
             self.interfacer = self.connector.cursor()
             
@@ -30,13 +30,15 @@ class databaseinterfacer():
         
     def signup_user_query(self,username:str) -> bool:
         try:
-            self.interfacer.execute('SELECT * FROM users WHERE username LIKE ?',(username))
-            if not self.interfacer.fetchone():
-                return False # not present in db so can continue
+            self.interfacer.execute('SELECT * FROM users WHERE username LIKE ?',(username,))
+            self.connector.commit()
+            if self.interfacer.fetchone():
+                return True # present in db so cant continue
             else:
-                return True
-        except:
-               return True #if fails for any reason will return the result that requires it to be tried again
+                return False
+        except Exception as e:
+            print(f'username query error:{e}')
+            return True #if fails for any reason will return the result that requires it to be tried again
            
     def signup_user_entry(self,userID:str,username:str,hashed_password:str) -> bool:
         try:
@@ -45,7 +47,8 @@ class databaseinterfacer():
             print('success')
             return True
         except Exception as e:
-            return e, False
+            print(e)
+            return False
         
     def close(self) -> None:
         self.interfacer.close()

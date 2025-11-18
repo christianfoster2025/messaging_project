@@ -8,6 +8,8 @@ def main() -> None: #main programme runtime, this is the script that will actual
     username,password = startup(db)
     
     db.close()
+    
+    print('stage one completed')
     #end of stage one
     
 

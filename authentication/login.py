@@ -57,7 +57,7 @@ def login_screen(db):
     screen.show()
     runtime.exec()
     runtime.shutdown()
-    return screen.output()
+    return screen.output
     
 if __name__ == '__main__':
     login_screen()

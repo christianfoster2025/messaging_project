@@ -21,7 +21,7 @@ def startup(db) -> list:
                         exit() #5 tries exceeded inside function programme now ends
             case 'signup':
                 signup_output = signup_screen(db)
-                if signup_output[0] == True:
+                if signup_output == True:
                     login = False #can now loop back round to sign in properly
                 else:
                     exit() #5 tries exceeded inside function programme now ends    
