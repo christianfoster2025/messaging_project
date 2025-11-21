@@ -23,3 +23,11 @@
 } || {
     echo 'start screen compilation failed'
 }
+
+{
+    pyside6-uic main_programme/test_mainwindow.ui -o main_programme/main_window.py &&
+    echo "start screen compiled"
+
+} || {
+    echo 'start screen compilation failed'
+}
