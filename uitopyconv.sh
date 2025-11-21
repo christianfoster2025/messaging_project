@@ -25,7 +25,7 @@
 }
 
 {
-    pyside6-uic main_programme/test_mainwindow.ui -o main_programme/main_window.py &&
+    pyside6-uic main_programme/test_mainwindow.ui -o main_programme/main_screen.py &&
     echo "start screen compiled"
 
 } || {

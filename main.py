@@ -1,4 +1,5 @@
 from authentication.setup import startup
+from main_programme.main_programme import mainscreen
 from database import databaseinterfacer
 def main() -> None: #main programme runtime, this is the script that will actually be ran
     username:str = ''
@@ -6,6 +7,9 @@ def main() -> None: #main programme runtime, this is the script that will actual
     userID:str = ''
     db = databaseinterfacer()
     username,password = startup(db)
+    mainscreen(db,userID,username,password)
+    
+    
     
     db.close()
     
@@ -16,3 +20,4 @@ def main() -> None: #main programme runtime, this is the script that will actual
 
 if __name__ == "__main__":
     main()
+    
