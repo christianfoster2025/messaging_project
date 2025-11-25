@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
-from main_programme.main_screen import Ui_MainWindow
-from main_programme.contact import add_contact_screen
+from ui_files.main_window.main_screen import Ui_MainWindow
+from main_window_scripts.contact import add_contact_screen
 import sys
 
 
@@ -13,14 +13,12 @@ class main_window(QMainWindow):
         self.ui.setupUi(self) #imports ui
         self.ui.exit_button.clicked.connect(self.exit_programme)
         self.ui.send_button.clicked.connect(self.send)
-        self.ui.add_contact_button.clicked.connect(self.add_contact)
+        self.ui.add_contact_button.clicked.connect(lambda: add_contact_screen(self.database,self.username))
         self.database = db #db link
         self.username:str = username
     
     
-    def add_contact(self):
-        add_contact_screen(self.database,self.username)
-    
+   
     def send(self):
         pass
         
@@ -32,7 +30,7 @@ class main_window(QMainWindow):
     
 def mainscreen(db,userID,username,password):
     runtime = QApplication(sys.argv)
-    screen = main_window(db,username)
+    screen = main_window(db,username,runtime)
     screen.show()
     runtime.exec()
     runtime.shutdown()

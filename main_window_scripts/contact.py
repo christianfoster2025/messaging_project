@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
-from main_programme.contact_dialogue import Ui_Dialog
+from ui_files.main_window.contact_dialogue import Ui_Dialog
 import sys
 from getmac import get_mac_address
 
@@ -24,7 +24,8 @@ def add_contact_screen(db,username):
     
     dialogue = contact_dialogue(db,username)
     dialogue.show()
-    #dialogue.exec() #initaties main loop
+    
+    dialogue.exec_() #initaties main loop
     #runtime.shutdown() # when mainloop is ended kills qapplication
  
 

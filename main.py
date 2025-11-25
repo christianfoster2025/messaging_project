@@ -1,5 +1,5 @@
-from authentication.setup import startup
-from main_programme.main_programme import mainscreen
+from authentication_scripts.setup import startup
+from main_window_scripts.main_programme import mainscreen
 from database import databaseinterfacer
 
 

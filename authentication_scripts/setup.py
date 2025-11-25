@@ -1,6 +1,6 @@
-from authentication.signup import signup_screen
-from authentication.login import login_screen 
-from authentication.start import start_screen
+from authentication_scripts.login import login_screen 
+from authentication_scripts.signup import signup_screen
+from authentication_scripts.start import start_screen
 
 
 def startup(db) -> tuple: 

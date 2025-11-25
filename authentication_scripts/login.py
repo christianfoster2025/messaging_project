@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
-from authentication.login_screen import Ui_MainWindow
-from main_programme.encryption import hasher
+from ui_files.authentication.login_screen import Ui_MainWindow
+from main_window_scripts.encryption import hasher
 import sys
 
 class login_window(QMainWindow):
