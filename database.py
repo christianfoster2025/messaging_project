@@ -15,7 +15,7 @@ class databaseinterfacer():
             #print('db exists')
             self.connector = sqlite3.connect('programme.db')
             self.interfacer = self.connector.cursor()
-            
+        self.userid:str = '' #will be used to keep userid to stop it being called unnecessarily   
             
     def loginquery(self,username:str,hashed_password:str) -> bool: # has failout prevention to prevent failout
         try:
@@ -49,6 +49,19 @@ class databaseinterfacer():
         except Exception as e:
             print(e)
             return False
+        
+    def current_userID(self,username):
+        if self.userid == '':
+            try:
+                self.interfacer.execute('SELECT FROM users WHERE username LIKE ?',(username,))
+                print('success')
+                return self.interfacer.fetchone()
+                
+            except Exception as e:
+                print(e)
+        else:
+            return self.userid
+        
         
     def close(self) -> None:
         self.interfacer.close()

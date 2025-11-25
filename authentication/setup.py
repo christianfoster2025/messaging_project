@@ -1,10 +1,9 @@
-import sqlite3, os.path
 from authentication.signup import signup_screen
 from authentication.login import login_screen 
 from authentication.start import start_screen
 
 
-def startup(db) -> list: 
+def startup(db) -> tuple: 
     #checking db exists
     
     login:bool = False

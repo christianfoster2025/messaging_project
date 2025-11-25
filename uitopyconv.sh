@@ -26,8 +26,16 @@
 
 {
     pyside6-uic main_programme/test_mainwindow.ui -o main_programme/main_screen.py &&
-    echo "start screen compiled"
+    echo "main screen compiled"
 
 } || {
-    echo 'start screen compilation failed'
+    echo 'main screen compilation failed'
+}
+
+{
+    pyside6-uic main_programme/test_contactdialogue.ui -o main_programme/contact_dialogue.py &&
+    echo "contact dialogue compiled"
+
+} || {
+    echo 'contact dialogue compilation failed'
 }

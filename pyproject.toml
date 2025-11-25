@@ -6,5 +6,6 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "cryptography>=46.0.3",
+    "getmac>=0.9.5",
     "pyside6>=6.10.0",
 ]

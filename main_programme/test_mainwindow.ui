@@ -35,7 +35,7 @@
        <x>390</x>
        <y>860</y>
        <width>1081</width>
-       <height>73</height>
+       <height>91</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="send_bar">
@@ -66,13 +66,42 @@
     <widget class="QWidget" name="horizontalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>390</x>
+       <x>20</x>
        <y>20</y>
-       <width>1081</width>
+       <width>1451</width>
        <height>71</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="contact_bar">
+      <item>
+       <widget class="QPushButton" name="add_contact_button">
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>90</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>add new contact</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>160</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item>
        <widget class="QLabel" name="current_contact">
         <property name="font">
@@ -127,9 +156,9 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>20</y>
+       <y>110</y>
        <width>361</width>
-       <height>911</height>
+       <height>821</height>
       </rect>
      </property>
      <property name="widgetResizable">
@@ -141,7 +170,7 @@
         <x>0</x>
         <y>0</y>
         <width>359</width>
-        <height>909</height>
+        <height>819</height>
        </rect>
       </property>
      </widget>
@@ -154,7 +183,7 @@
      <x>0</x>
      <y>0</y>
      <width>1522</width>
-     <height>19</height>
+     <height>39</height>
     </rect>
    </property>
   </widget>

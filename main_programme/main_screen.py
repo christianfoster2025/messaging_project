@@ -17,7 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QMainWindow, QMenuBar, QPushButton, QScrollArea,
-    QSizePolicy, QStatusBar, QTextEdit, QWidget)
+    QSizePolicy, QSpacerItem, QStatusBar, QTextEdit,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -33,7 +34,7 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayoutWidget = QWidget(self.frame)
         self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
-        self.horizontalLayoutWidget.setGeometry(QRect(390, 860, 1081, 73))
+        self.horizontalLayoutWidget.setGeometry(QRect(390, 860, 1081, 91))
         self.send_bar = QHBoxLayout(self.horizontalLayoutWidget)
         self.send_bar.setObjectName(u"send_bar")
         self.send_bar.setContentsMargins(0, 0, 0, 0)
@@ -53,10 +54,20 @@ class Ui_MainWindow(object):
 
         self.horizontalLayoutWidget_2 = QWidget(self.frame)
         self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
-        self.horizontalLayoutWidget_2.setGeometry(QRect(390, 20, 1081, 71))
+        self.horizontalLayoutWidget_2.setGeometry(QRect(20, 20, 1451, 71))
         self.contact_bar = QHBoxLayout(self.horizontalLayoutWidget_2)
         self.contact_bar.setObjectName(u"contact_bar")
         self.contact_bar.setContentsMargins(0, 0, 0, 0)
+        self.add_contact_button = QPushButton(self.horizontalLayoutWidget_2)
+        self.add_contact_button.setObjectName(u"add_contact_button")
+        self.add_contact_button.setMaximumSize(QSize(200, 90))
+
+        self.contact_bar.addWidget(self.add_contact_button)
+
+        self.horizontalSpacer = QSpacerItem(160, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
+
+        self.contact_bar.addItem(self.horizontalSpacer)
+
         self.current_contact = QLabel(self.horizontalLayoutWidget_2)
         self.current_contact.setObjectName(u"current_contact")
         font1 = QFont()
@@ -81,16 +92,16 @@ class Ui_MainWindow(object):
         self.messages_scroll.setWidget(self.scrollAreaWidgetContents)
         self.Contactlist_scroll = QScrollArea(self.frame)
         self.Contactlist_scroll.setObjectName(u"Contactlist_scroll")
-        self.Contactlist_scroll.setGeometry(QRect(20, 20, 361, 911))
+        self.Contactlist_scroll.setGeometry(QRect(20, 110, 361, 821))
         self.Contactlist_scroll.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 359, 909))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 359, 819))
         self.Contactlist_scroll.setWidget(self.scrollAreaWidgetContents_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1522, 19))
+        self.menubar.setGeometry(QRect(0, 0, 1522, 39))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -104,6 +115,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.send_button.setText(QCoreApplication.translate("MainWindow", u"Send", None))
+        self.add_contact_button.setText(QCoreApplication.translate("MainWindow", u"add new contact", None))
         self.current_contact.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.exit_button.setText(QCoreApplication.translate("MainWindow", u"exit", None))
     # retranslateUi

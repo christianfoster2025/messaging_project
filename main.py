@@ -1,12 +1,21 @@
 from authentication.setup import startup
 from main_programme.main_programme import mainscreen
 from database import databaseinterfacer
+
+
+
 def main() -> None: #main programme runtime, this is the script that will actually be ran
     username:str = ''
     password:str = ''
     userID:str = ''
     db = databaseinterfacer()
     username,password = startup(db)
+    
+    
+    
+    
+    
+    
     mainscreen(db,userID,username,password)
     
     

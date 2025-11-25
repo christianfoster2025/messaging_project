@@ -67,6 +67,8 @@ def signup_screen(db):
     runtime.exec()
     runtime.shutdown()
     return screen.output
+
+
 if __name__ == '__main__':
     signup_screen()
 
