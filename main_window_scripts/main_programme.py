@@ -30,7 +30,7 @@ class main_window(QMainWindow):
     
 def mainscreen(db,userID,username,password):
     runtime = QApplication(sys.argv)
-    screen = main_window(db,username,runtime)
+    screen = main_window(db,username)
     screen.show()
     runtime.exec()
     runtime.shutdown()

@@ -50,18 +50,34 @@ class databaseinterfacer():
             print(e)
             return False
         
-    def current_userID(self,username):
+    def current_userID(self,username:str) -> str:
         if self.userid == '':
             try:
-                self.interfacer.execute('SELECT FROM users WHERE username LIKE ?',(username,))
-                print('success')
-                return self.interfacer.fetchone()
+                self.interfacer.execute('SELECT userID FROM users WHERE username LIKE ?',(username,))
+                self.connector.commit()
+                #print('success')
+                self.userid = self.interfacer.fetchone()
+                self.userid = self.userid[0]
+                #print(self.userid)
+                return self.userid
                 
             except Exception as e:
                 print(e)
         else:
             return self.userid
         
+    
+    def contact_user_add(self, alias:str, wifi_mac:str, bluetooth_mac:str, contactid:str, current_userid:str,public_key:str) -> bool:
+        try:
+            self.interfacer.execute('INSERT INTO contacts VALUES (?,?,?,?,?,?)',(alias,contactid,current_userid,public_key,wifi_mac,bluetooth_mac))
+            self.connector.commit()
+            print('success')
+            return True
+        except Exception as e:
+            print(e)
+            return False
+            
+    
         
     def close(self) -> None:
         self.interfacer.close()
