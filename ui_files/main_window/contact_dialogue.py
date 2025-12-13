@@ -23,10 +23,10 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(400, 508)
+        Dialog.resize(396, 577)
         self.verticalLayoutWidget = QWidget(Dialog)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(10, 20, 381, 441))
+        self.verticalLayoutWidget.setGeometry(QRect(10, 20, 391, 471))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -109,6 +109,17 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addWidget(self.form_submit)
 
+        self.errorlabel = QLabel(self.verticalLayoutWidget)
+        self.errorlabel.setObjectName(u"errorlabel")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.errorlabel.sizePolicy().hasHeightForWidth())
+        self.errorlabel.setSizePolicy(sizePolicy1)
+        self.errorlabel.setStyleSheet(u"color:red")
+
+        self.verticalLayout.addWidget(self.errorlabel)
+
         self.header2 = QLabel(self.verticalLayoutWidget)
         self.header2.setObjectName(u"header2")
         self.header2.setMaximumSize(QSize(16777215, 16))
@@ -142,6 +153,7 @@ class Ui_Dialog(object):
         self.bluetooth_mac_label.setText(QCoreApplication.translate("Dialog", u"Enter Bluetooth MAC address:", None))
         self.publickey_label.setText(QCoreApplication.translate("Dialog", u"Enter encryption Public key:", None))
         self.userid_label.setText(QCoreApplication.translate("Dialog", u"UserID:", None))
+        self.errorlabel.setText("")
         self.header2.setText(QCoreApplication.translate("Dialog", u"Your Contact information:", None))
     # retranslateUi
 

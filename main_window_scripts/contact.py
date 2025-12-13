@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow,QApplication, QDialog
 from ui_files.main_window.contact_dialogue import Ui_Dialog
 import sys
-from encryption import zerocheck
+from main_window_scripts.encryption import zerocheck
 from getmac import get_mac_address
 
 class contact_dialogue(QDialog): 
@@ -10,6 +10,8 @@ class contact_dialogue(QDialog):
         super(contact_dialogue,self).__init__() #inherits the parent class
         self.ui = Ui_Dialog() #imports ui from the app
         self.ui.setupUi(self)
+        self.database = db
+        
         self.user_userID = db.current_userID(username) #needs adding
         self.user_wifi_mac = get_mac_address()
         self.user_bluetooth_mac = None
@@ -18,16 +20,32 @@ class contact_dialogue(QDialog):
         self.ui.contact_info.setPlainText(f'Wi-Fi Mac Address: {self.user_wifi_mac} \nBluetooth Mac Address: {self.user_bluetooth_mac} \nPublic Key: {self.user_public_key} \nUserID: {self.user_userID}')
         
         
-    def accept(self,db) -> None :
+    def accept(self) -> None :
         
-        if zerocheck(self.ui.alias_entry) or zerocheck(self.ui.userid_entry) or zerocheck(self.ui.publickey_entry) or \
-            zerocheck(self.ui.bluetooth_mac_entry) or zerocheck(self.ui.wifi_mac_entry):
+        alias=self.ui.alias_entry
+        wifi_mac=self.ui.wifi_mac_entry
+        bluetooth_mac=self.ui.bluetooth_mac_entry
+        contactid=self.ui.userid_entry
+        current_userid=self.user_userID
+        public_key=self.ui.publickey_entry
+        
+        if zerocheck(alias) or zerocheck(wifi_mac) or zerocheck(bluetooth_mac) or \
+            zerocheck(contactid) or zerocheck(public_key):
             self.attempts +=1
+            self.ui.errorlabel.setText('Please fill all fields.')
         # TODO alias check, check all things havent been entered before
+        if self.database.contact_preexist_check(self, alias, wifi_mac, bluetooth_mac, contactid,public_key):
+            self.attempts += 1
+            self.ui.errorlabel.setText('Make sure the contact is unique')
+        
         
         else: 
             print('testing accept')
-            super().accept()
+            try:
+                self.database.contact_user_add(alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key)
+                super().accept()
+            except:
+                self.ui.errorlabel.setText('Database error try again.')
             
             
         

@@ -77,6 +77,29 @@ class databaseinterfacer():
             print(e)
             return False
             
+    def contact_preexist_check(self, alias:str, wifi_mac:str, bluetooth_mac:str, contactid:str, current_userid:str,public_key:str) -> bool:
+        try:
+            self.interfacer.execute('SELECT * FROM contacts WHERE alias LIKE ? OR contactID LIKE ? OR public_key LIKE ? OR wifi_mac_address LIKE ? OR bluetooth_mac_address LIKE ?',(alias, wifi_mac, bluetooth_mac, contactid,public_key))
+            self.connector.commit()
+            if self.interfacer.fetchone():
+                return True # present in db so cant continue
+            else:
+                return False
+        except Exception as e:
+            print(f'username query error:{e}')
+            return True #if fails for any reason will return the result that requires it to be tried again
+    
+    
+    def getcontacts(self,userID:str) -> list:
+        try:
+            self.interfacer.execute('SELECT * FROM CONTACTS WHERE userID LIKE ?',(userID,))
+            if not(self.interfacer.fetchone):
+                return False
+            else:
+                return self.interfacer.fetchall()
+        except:
+            return False
+    
     
         
     def close(self) -> None:

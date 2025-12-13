@@ -25,7 +25,7 @@
 }
 
 {
-    pyside6-uic main_programme/test_mainwindow.ui -o main_programme/main_screen.py &&
+    pyside6-uic main_window/test_mainwindow.ui -o main_window/main_screen.py &&
     echo "main screen compiled"
 
 } || {
@@ -33,7 +33,7 @@
 }
 
 {
-    pyside6-uic main_programme/test_contactdialogue.ui -o main_programme/contact_dialogue.py &&
+    pyside6-uic main_window/test_contactdialogue.ui -o main_window/contact_dialogue.py &&
     echo "contact dialogue compiled"
 
 } || {
