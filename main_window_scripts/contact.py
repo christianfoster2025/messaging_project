@@ -22,19 +22,19 @@ class contact_dialogue(QDialog):
         
     def accept(self) -> None :
         
-        alias=self.ui.alias_entry
-        wifi_mac=self.ui.wifi_mac_entry
-        bluetooth_mac=self.ui.bluetooth_mac_entry
-        contactid=self.ui.userid_entry
+        alias=self.ui.alias_entry.text()
+        wifi_mac=self.ui.wifi_mac_entry.text()
+        bluetooth_mac=self.ui.bluetooth_mac_entry.text()
+        contactid=self.ui.userid_entry.text()
         current_userid=self.user_userID
-        public_key=self.ui.publickey_entry
+        public_key=self.ui.publickey_entry.text()
         
         if zerocheck(alias) or zerocheck(wifi_mac) or zerocheck(bluetooth_mac) or \
             zerocheck(contactid) or zerocheck(public_key):
             self.attempts +=1
             self.ui.errorlabel.setText('Please fill all fields.')
         # TODO alias check, check all things havent been entered before
-        if self.database.contact_preexist_check(self, alias, wifi_mac, bluetooth_mac, contactid,public_key):
+        if self.database.contact_preexist_check(alias, wifi_mac, bluetooth_mac, contactid,public_key):
             self.attempts += 1
             self.ui.errorlabel.setText('Make sure the contact is unique')
         
@@ -44,6 +44,7 @@ class contact_dialogue(QDialog):
             try:
                 self.database.contact_user_add(alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key)
                 super().accept()
+                self.close()
             except:
                 self.ui.errorlabel.setText('Database error try again.')
             

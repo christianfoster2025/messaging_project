@@ -164,7 +164,7 @@
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+     <widget class="QWidget" name="Contactlist_scroll_widget">
       <property name="geometry">
        <rect>
         <x>0</x>

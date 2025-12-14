@@ -15,7 +15,12 @@ class databaseinterfacer():
             #print('db exists')
             self.connector = sqlite3.connect('programme.db')
             self.interfacer = self.connector.cursor()
-        self.userid:str = '' #will be used to keep userid to stop it being called unnecessarily   
+            
+            
+        #caching variables    
+        self.userid:str = '' #will be used to keep userid to stop it being called unnecessarily
+        self.contactlist:list = [] #cached contact list
+        self.contactupdate = False   #tracks if new contact list needs to be pulled down
             
     def loginquery(self,username:str,hashed_password:str) -> bool: # has failout prevention to prevent failout
         try:
@@ -71,13 +76,14 @@ class databaseinterfacer():
         try:
             self.interfacer.execute('INSERT INTO contacts VALUES (?,?,?,?,?,?)',(alias,contactid,current_userid,public_key,wifi_mac,bluetooth_mac))
             self.connector.commit()
-            print('success')
+            #print('success')
+            self.contactupdate = True
             return True
         except Exception as e:
             print(e)
             return False
             
-    def contact_preexist_check(self, alias:str, wifi_mac:str, bluetooth_mac:str, contactid:str, current_userid:str,public_key:str) -> bool:
+    def contact_preexist_check(self, alias:str, wifi_mac:str, bluetooth_mac:str, contactid:str,public_key:str) -> bool:
         try:
             self.interfacer.execute('SELECT * FROM contacts WHERE alias LIKE ? OR contactID LIKE ? OR public_key LIKE ? OR wifi_mac_address LIKE ? OR bluetooth_mac_address LIKE ?',(alias, wifi_mac, bluetooth_mac, contactid,public_key))
             self.connector.commit()
@@ -91,15 +97,20 @@ class databaseinterfacer():
     
     
     def getcontacts(self,userID:str) -> list:
-        try:
-            self.interfacer.execute('SELECT * FROM CONTACTS WHERE userID LIKE ?',(userID,))
-            if not(self.interfacer.fetchone):
+        print(self.contactlist,self.contactupdate)
+        if self.contactlist == [] or self.contactupdate == True:
+            try:
+                self.interfacer.execute('SELECT * FROM CONTACTS WHERE userID LIKE ?',(userID,))
+                self.connector.commit()
+                if not(self.interfacer.fetchone()):
+                    return False
+                else:
+                    self.contactupdate = False
+                    return self.interfacer.fetchall()
+            except:
                 return False
-            else:
-                return self.interfacer.fetchall()
-        except:
-            return False
-    
+        else:
+            return self.contactlist
     
         
     def close(self) -> None:
