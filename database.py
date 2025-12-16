@@ -101,22 +101,20 @@ class databaseinterfacer():
         if self.contactlist == [] or self.contactupdate == True:
 
             try:
-                self.interfacer.execute('SELECT alias FROM contacts WHERE userID LIKE ?',(userID,))
+                self.interfacer.execute('SELECT alias,contactID FROM contacts WHERE userID LIKE ?',(userID,))
 
                 self.connector.commit()
                 result = self.interfacer.fetchall() # stores result of query in the temp variable result
   
                 if not(result): # checks if there are none
-                    return False
+                    return []
                 else:
                     self.contactupdate = False #sets the flag for retreiving contacts to be false as it has just been done and is therefore up to date
-                    for x in range (len(result)): #sqlite outputs as a list of tuples this just untuples it
-                        result[x] = (result[x])[0]
-                        self.contactlist = result
+                    self.contactlist = result # returns a list of tuples to be unpacked as needed
                     return self.contactlist
             except Exception as e:
                 print('get contacts error: ',e)
-                return False
+                return []
         else:
             return self.contactlist
     

@@ -23,7 +23,7 @@ class main_window(QMainWindow):
         self.contacts =[]
 
         self.update_contact_list()
-        self.current_contact = ''
+        self.current_contact = 0 #needs fixing
         self.main_pane_update()
 
         
@@ -49,30 +49,32 @@ class main_window(QMainWindow):
             instance = QLabel('No contacts to show here')
             self.vertical.addWidget(instance)    
         else:
-            
-            for contact in self.contacts:
-                instance = QPushButton(contact)
-                instance.clicked.connect(lambda:self.change_contact(contact))
+            for index in range (len(self.contacts)):
+                print(index)
+                instance = QPushButton(self.contacts[index][0])
+                instance.clicked.connect(lambda index=index: self.change_contact(index))
                 self.vertical.addWidget(instance)
         self.scrollwidget.setLayout(self.vertical)
         self.scroller.setWidget(self.scrollwidget)
        
    
     def main_pane_update(self):
-        print(self.current_contact)
-        if not(self.contacts):
+        #print(self.current_contact)
+        if not self.contacts:
             self.ui.current_contact.setText('no contacts to see here')
-        else:
-            self.current_contact=self.contacts[0]        
-            self.ui.current_contact.setText(self.current_contact)
+        else:    
+            self.ui.current_contact.setText(self.contacts[self.current_contact][0])
 
-   
+   #change contact is broken when connected to main pane update as this resets it to value 0 needs reworking completely
     
-    def change_contact(self,contact) -> None:
-        if self.current_contact == contact:
+    def change_contact(self,index) -> None:
+        print(f'index {index}')
+        print(f'current contact{self.current_contact}')
+        if self.current_contact == index:
             pass
         else:
-            self.current_contact = contact
+            self.current_contact = index
+            print(self.current_contact)
             self.main_pane_update()
   
     

@@ -10,20 +10,8 @@ def main() -> None: #main programme runtime, this is the script that will actual
     userID:str = ''
     db = databaseinterfacer()
     username,password = startup(db)
-    
-    
-    
-    
-    
-    
     mainscreen(db,username,password)
-    
-    
-    
     db.close()
-    
-    print('stage one completed')
-    #end of stage one
     
 
 
