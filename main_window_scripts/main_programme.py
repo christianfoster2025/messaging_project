@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy 
+from PySide6.QtCore import QSize, Qt, QRect
 from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
 import sys
@@ -43,6 +43,14 @@ class main_window(QMainWindow):
         self.scroller = self.ui.Contactlist_scroll
         self.scrollwidget = self.ui.Contactlist_scroll_widget
         self.vertical = QVBoxLayout()
+        
+        for i in reversed(range(self.vertical.count())): 
+            self.vertical.itemAt(i).widget().setParent(None) #BROKEN NEEDS FIXING TODO
+
+        
+        
+        
+        
         self.contacts = self.database.getcontacts(self.userID)
         print(self.contacts)
         if self.contacts == False:
@@ -52,8 +60,26 @@ class main_window(QMainWindow):
             for index in range (len(self.contacts)):
                 print(index)
                 instance = QPushButton(self.contacts[index][0])
-                instance.clicked.connect(lambda index=index: self.change_contact(index))
+                instance.clicked.connect(lambda checked, indx=index: self.change_contact(indx))
+                #instance.setObjectName(u"pushButton")
+                #instance.setGeometry(QRect(0, 100, 361, 91))
+                instance.setMinimumSize(QSize(0, 91))
+                instance.setStyleSheet(u'''
+        QPushButton::checked{
+            background-color: #ffd2cf;
+        }
+        QPushButton{
+        	
+            
+        }''')
+                instance.setCheckable(True)
+                instance.setChecked(False)
+                
                 self.vertical.addWidget(instance)
+                
+        self.horizontalSpacer = QSpacerItem(160, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum) #change size policy to (screenheight - 90(len(self.contacts)))
+        self.vertical.addItem(self.horizontalSpacer)
+        
         self.scrollwidget.setLayout(self.vertical)
         self.scroller.setWidget(self.scrollwidget)
        

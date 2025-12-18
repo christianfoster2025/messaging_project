@@ -130,8 +130,8 @@ class databaseinterfacer():
 
 
 if __name__ == '__main__':
-    connection = databaseinterfacer()
-    
+    #connection = databaseinterfacer()
+    pass
     #print(connection.signup_user_entry('1','paul','dsfakjsldfkasjfh'))
     #print(connection.loginquery('paul','dsfakjsldfkasjfh'))
-    connection.close()
+    #connection.close()
