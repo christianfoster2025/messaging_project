@@ -1,4 +1,4 @@
-import sqlite3, os.path
+import sqlite3, os.path, datetime
 
 class databaseinterfacer():
     
@@ -8,7 +8,7 @@ class databaseinterfacer():
             self.connector = sqlite3.connect('programme.db') #db creation
             self.interfacer = self.connector.cursor()
             self.interfacer.execute(''' create table users (userID TEXT, username TEXT,password TEXT, private_key TEXT,public_key TEXT)''')
-            self.interfacer.execute(''' create table messages (timestamp TEXT,senderID TEXT,receiverID TEXT, contents TEXT)''')
+            self.interfacer.execute(''' create table messages (timestamp TEXT,senderID TEXT,receiverID TEXT, contents TEXT, state TEXT)''')
             self.interfacer.execute(''' create table contacts (alias TEXT, contactID TEXT,userID TEXT, public_key TEXT, wifi_mac_address TEXT, bluetooth_mac_address TEXT)''')   
             self.connector.commit()
         else:
@@ -118,6 +118,38 @@ class databaseinterfacer():
         else:
             return self.contactlist
     
+    def get_conversations(self,userID,contactID) -> list: #pulls conversations from database in an array with the format [(message,message state),(message,message state)] etc 
+        try:
+            message_list = []
+            self.interfacer.execute('SELECT contents,state FROM messages WHERE (senderID LIKE ? AND receiverID LIKE ?) OR (receiverID LIKE ? AND senderID LIKE ?)',(userID,contactID,userID,contactID))
+
+            self.connector.commit()
+            result = self.interfacer.fetchall() # stores result of query in the temp variable result
+
+            if not result: # checks if there are none
+                return message_list
+            else:
+                message_list = result # returns a list of tuples to be unpacked as needed
+                return message_list
+        except Exception as e:
+            print('get contacts error: ',e)
+            return message_list
+    
+    def store_message(self,userID,contactID,contents,state):
+        try:
+            if state == 'received':
+                senderID = contactID
+                receiverID = userID
+            else:
+                receiverID = contactID
+                senderID = userID
+            timestamp = str(datetime.datetime.now()).split('.')[0]
+            self.interfacer.execute('INSERT INTO messages VALUES (?,?,?,?,?)',(timestamp,senderID,receiverID,contents,state))
+            self.connector.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False        
         
     def close(self) -> None:
         self.interfacer.close()

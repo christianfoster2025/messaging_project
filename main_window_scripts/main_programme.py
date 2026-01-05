@@ -64,8 +64,6 @@ class main_window(QMainWindow):
                 print(index)
                 instance = QPushButton(self.contacts[index][0])
                 instance.clicked.connect(lambda checked, indx=index: self.change_contact(indx))
-                #instance.setObjectName(u"pushButton")
-                #instance.setGeometry(QRect(0, 100, 361, 91))
                 instance.setMinimumSize(QSize(0, 91))
                 instance.setStyleSheet(u'''
                 QPushButton::checked{
@@ -85,6 +83,11 @@ class main_window(QMainWindow):
         
         self.scrollwidget.setLayout(self.vertical)
         self.scroller.setWidget(self.scrollwidget)
+    
+    
+    def message_panel_setup(self):
+        ...
+    
        
    
     def main_pane_update(self):
