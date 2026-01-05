@@ -7,16 +7,20 @@ from getmac import get_mac_address
 class contact_dialogue(QDialog): 
     
     def __init__(self,db,username):
+        #UI import
         super(contact_dialogue,self).__init__() #inherits the parent class
         self.ui = Ui_Dialog() #imports ui from the app
         self.ui.setupUi(self)
         self.database = db
         
+        #variable init
         self.user_userID = db.current_userID(username) #needs adding
         self.user_wifi_mac = get_mac_address()
         self.user_bluetooth_mac = None
         self.user_public_key = None
         self.attempts = 0
+        
+        #screen setup
         self.ui.contact_info.setPlainText(f'Wi-Fi Mac Address: {self.user_wifi_mac} \nBluetooth Mac Address: {self.user_bluetooth_mac} \nPublic Key: {self.user_public_key} \nUserID: {self.user_userID}')
         
         
@@ -47,9 +51,6 @@ class contact_dialogue(QDialog):
                 self.close()
             except:
                 self.ui.errorlabel.setText('Database error try again.')
-            
-            
-        
         
         if self.attempts > 3:
             super().reject()

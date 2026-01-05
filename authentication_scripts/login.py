@@ -6,14 +6,16 @@ import sys
 class login_window(QMainWindow):
     
     def __init__(self,db):
+        #ui init
         super(login_window,self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self) #imports ui
         
+        #button connect
         self.ui.submit_form.clicked.connect(self.logincheck) #connects button
-        self.database = db #db link
         
         #variables
+        self.database = db #db link
         self.hashed_password = '' 
         self.fail_count =0 
         self.username = ''

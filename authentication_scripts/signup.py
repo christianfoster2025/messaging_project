@@ -6,13 +6,15 @@ import sys, uuid
 class signup_window(QMainWindow):
     
     def __init__(self,db):
+        
+        #screen setup
         super(signup_window,self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.submit_form.clicked.connect(self.signupcheck)
         self.database = db
         
-        
+        #variable setup
         self.hashed_password = '' 
         self.confirm_hashed_password = ''
         self.fail_count =0 

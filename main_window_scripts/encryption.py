@@ -15,5 +15,9 @@ def zerocheck(input:str) -> bool:
     else: 
         return False
      
+     
+def encrypt(text):
+    return text #unimplemented     
+
 if __name__ == '__main__':
     hasher(input())

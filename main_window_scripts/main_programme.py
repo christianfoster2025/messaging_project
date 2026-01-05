@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout
 from PySide6.QtCore import QSize, Qt, QRect
 from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
+from main_window_scripts.encryption import encrypt
 import sys
 
 
@@ -13,15 +14,18 @@ class main_window(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self) #imports ui
 
+        #button connections
         self.ui.exit_button.clicked.connect(self.exit_programme)
         self.ui.send_button.clicked.connect(self.send)
         self.ui.add_contact_button.clicked.connect(self.new_contact_button)
-                                                   
+                   
+        #variable initialisation                                
         self.database = db #db link
         self.username = username
         self.userID = self.database.current_userID(self.username)
         self.contacts =[]
 
+        #inital screen setup
         self.update_contact_list()
         self.current_contact = 0 #needs fixing
         self.main_pane_update()
@@ -33,7 +37,10 @@ class main_window(QMainWindow):
        self.update_contact_list()
    
     def send(self):
-        pass
+        unencrypted_text = self.ui.message_input.text()
+        encrypted_text = encrypt(unencrypted_text)
+        print(encrypted_text)
+        
         
     def exit_programme(self):
          exit()
@@ -45,12 +52,8 @@ class main_window(QMainWindow):
         self.vertical = QVBoxLayout()
         
         for i in reversed(range(self.vertical.count())): 
-            self.vertical.itemAt(i).widget().setParent(None) #BROKEN NEEDS FIXING TODO
+            self.vertical.itemAt(i).widget().setParent(None) #BROKEN NEEDS FIXING TODO, WIDGETS DO NOT CLEAR 
 
-        
-        
-        
-        
         self.contacts = self.database.getcontacts(self.userID)
         print(self.contacts)
         if self.contacts == False:
@@ -65,20 +68,20 @@ class main_window(QMainWindow):
                 #instance.setGeometry(QRect(0, 100, 361, 91))
                 instance.setMinimumSize(QSize(0, 91))
                 instance.setStyleSheet(u'''
-        QPushButton::checked{
-            background-color: #ffd2cf;
-        }
-        QPushButton{
-        	
-            
-        }''')
-                instance.setCheckable(True)
-                instance.setChecked(False)
+                QPushButton::checked{
+                    background-color: #ffd2cf;
+                }
+                QPushButton{
+                    
+                    
+                }''')
+                #instance.setCheckable(True) #need finishing
+                #instance.setChecked(False)
                 
                 self.vertical.addWidget(instance)
-                
-        self.horizontalSpacer = QSpacerItem(160, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum) #change size policy to (screenheight - 90(len(self.contacts)))
-        self.vertical.addItem(self.horizontalSpacer)
+               
+        #self.horizontalSpacer = QSpacerItem(160, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum) #change size policy to (screenheight - 90(len(self.contacts)))
+        #self.vertical.addItem(self.horizontalSpacer) #TODO logic needs implementing
         
         self.scrollwidget.setLayout(self.vertical)
         self.scroller.setWidget(self.scrollwidget)
