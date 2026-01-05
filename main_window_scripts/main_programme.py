@@ -1,8 +1,9 @@
-from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy 
+from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy, QMessageBox 
 from PySide6.QtCore import QSize, Qt, QRect
 from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
 from main_window_scripts.encryption import encrypt
+from network import send_message
 import sys
 
 
@@ -24,10 +25,14 @@ class main_window(QMainWindow):
         self.username = username
         self.userID = self.database.current_userID(self.username)
         self.contacts =[]
+        self.contact_buttons_dict = {}
+
+        self.current_contact_index = 0
+        self.current_contact_ID = self.contacts[self.current_contact_index][1]
+        self.current_contact_messages = []
 
         #inital screen setup
         self.update_contact_list()
-        self.current_contact = 0 #needs fixing
         self.main_pane_update()
 
         
@@ -39,7 +44,17 @@ class main_window(QMainWindow):
     def send(self):
         unencrypted_text = self.ui.message_input.text()
         encrypted_text = encrypt(unencrypted_text)
-        print(encrypted_text)
+        recipientID = self.current_contact_ID
+        if send_message(self.userID,recipientID,encrypted_text):
+            state = 'sent'
+
+            if self.database.store_message(self.userID,recipientID,encrypted_text,state):
+                self.ui.message_input.setText('')
+
+            else: 
+                QMessageBox.warning(self,'Error','Your Message hasn\'t been saved into the database')
+        else:
+            QMessageBox.warning(self,'Error','Your Message hasn\'t successfully sent. Please try again.')
         
         
     def exit_programme(self):
@@ -60,6 +75,7 @@ class main_window(QMainWindow):
             instance = QLabel('No contacts to show here')
             self.vertical.addWidget(instance)    
         else:
+            
             for index in range (len(self.contacts)):
                 print(index)
                 instance = QPushButton(self.contacts[index][0])
@@ -73,9 +89,9 @@ class main_window(QMainWindow):
                     
                     
                 }''')
-                #instance.setCheckable(True) #need finishing
-                #instance.setChecked(False)
-                
+                instance.setCheckable(True)
+                instance.setChecked(False)
+                self.contact_buttons_dict[index] = instance
                 self.vertical.addWidget(instance)
                
         #self.horizontalSpacer = QSpacerItem(160, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum) #change size policy to (screenheight - 90(len(self.contacts)))
@@ -86,27 +102,31 @@ class main_window(QMainWindow):
     
     
     def message_panel_setup(self):
-        ...
+        self.scroller = self.ui.messages_scroll
+        self.scrollwidget = self.ui.scrollAreaWidgetContents #needs name change in the .UI file
+        self.vertical = QVBoxLayout()
+
+        if self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1]) is None:
+            ...
     
        
    
     def main_pane_update(self):
-        #print(self.current_contact)
+
         if not self.contacts:
             self.ui.current_contact.setText('no contacts to see here')
         else:    
-            self.ui.current_contact.setText(self.contacts[self.current_contact][0])
+            self.ui.current_contact.setText(self.contacts[self.current_contact_index][0])
 
-   #change contact is broken when connected to main pane update as this resets it to value 0 needs reworking completely
-    
+
     def change_contact(self,index) -> None:
-        print(f'index {index}')
-        print(f'current contact{self.current_contact}')
-        if self.current_contact == index:
+
+        if self.current_contact_index == index:
             pass
         else:
-            self.current_contact = index
-            print(self.current_contact)
+            self.contact_buttons_dict[self.current_contact_index].setChecked(False)
+            self.current_contact_index = index
+            self.current_contact_ID = self.contacts[self.current_contact_index][1]
             self.main_pane_update()
   
     
