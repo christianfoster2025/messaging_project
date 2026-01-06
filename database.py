@@ -30,7 +30,8 @@ class databaseinterfacer():
                 return False
             else:
                 return True
-        except:
+        except Exception as e:
+            print(f'login query error:{e}')
             return False
         
     def signup_user_query(self,username:str) -> bool:
@@ -52,7 +53,7 @@ class databaseinterfacer():
             print('success')
             return True
         except Exception as e:
-            print(e)
+            print(f'signup user entry error:{e}')
             return False
         
     def current_userID(self,username:str) -> str:
@@ -67,7 +68,7 @@ class databaseinterfacer():
                 return self.userid
                 
             except Exception as e:
-                print(e)
+                print(f'current userID fetch error: {e}')
         else:
             return self.userid
         
@@ -80,7 +81,7 @@ class databaseinterfacer():
             self.contactupdate = True
             return True
         except Exception as e:
-            print(e)
+            print(f'contact user add error: {e}')
             return False
             
     def contact_preexist_check(self, alias:str, wifi_mac:str, bluetooth_mac:str, contactid:str,public_key:str) -> bool:
@@ -113,7 +114,7 @@ class databaseinterfacer():
                     self.contactlist = result # returns a list of tuples to be unpacked as needed
                     return self.contactlist
             except Exception as e:
-                print('get contacts error: ',e)
+                print(f'get contacts error: {e}')
                 return []
         else:
             return self.contactlist
@@ -132,7 +133,7 @@ class databaseinterfacer():
                 message_list = result # returns a list of tuples to be unpacked as needed
                 return message_list
         except Exception as e:
-            print('get contacts error: ',e)
+            print(f'get conversations error: {e}')
             return message_list
     
     def store_message(self,userID,contactID,contents,state):
@@ -148,7 +149,7 @@ class databaseinterfacer():
             self.connector.commit()
             return True
         except Exception as e:
-            print(e)
+            print(f'message storing error{e}')
             return False        
         
     def close(self) -> None:
