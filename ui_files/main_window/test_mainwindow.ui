@@ -141,7 +141,7 @@
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
+     <widget class="QWidget" name="messages_scroll_widget">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -183,7 +183,7 @@
      <x>0</x>
      <y>0</y>
      <width>1522</width>
-     <height>39</height>
+     <height>33</height>
     </rect>
    </property>
   </widget>

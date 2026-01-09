@@ -136,7 +136,7 @@ class databaseinterfacer():
             print(f'get conversations error: {e}')
             return message_list
     
-    def store_message(self,userID,contactID,contents,state):
+    def store_message(self,userID,contactID,contents,state) -> bool:
         try:
             if state == 'received':
                 senderID = contactID

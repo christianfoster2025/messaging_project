@@ -10,7 +10,7 @@ import sys
 
 class main_window(QMainWindow):
     
-    def __init__(self,db,username):
+    def __init__(self,db,username) -> None:
         super(main_window,self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self) #imports ui
@@ -28,20 +28,20 @@ class main_window(QMainWindow):
         self.contact_buttons_dict = {}
 
         self.current_contact_index = 0
-        self.current_contact_ID = self.contacts[self.current_contact_index][1]
         self.current_contact_messages = []
 
         #inital screen setup
         self.update_contact_list()
         self.main_pane_update()
 
+        self.current_contact_ID = self.contacts[self.current_contact_index][1]
         
 
-    def new_contact_button(self):
+    def new_contact_button(self) -> None:
        add_contact_screen(self.database,self.username)
        self.update_contact_list()
    
-    def send(self):
+    def send(self) -> None:
         unencrypted_text = self.ui.message_input.text()
         encrypted_text = encrypt(unencrypted_text)
         recipientID = self.current_contact_ID
@@ -57,7 +57,7 @@ class main_window(QMainWindow):
             QMessageBox.warning(self,'Error','Your Message hasn\'t successfully sent. Please try again.')
         
         
-    def exit_programme(self):
+    def exit_programme(self) -> None:
          exit()
            
     def update_contact_list(self) -> None:
@@ -101,7 +101,7 @@ class main_window(QMainWindow):
         self.scroller.setWidget(self.scrollwidget)
     
     
-    def message_panel_setup(self):
+    def message_panel_setup(self) -> None:
         self.scroller = self.ui.messages_scroll
         self.scrollwidget = self.ui.scrollAreaWidgetContents #needs name change in the .UI file
         self.vertical = QVBoxLayout()
@@ -111,7 +111,7 @@ class main_window(QMainWindow):
     
        
    
-    def main_pane_update(self):
+    def main_pane_update(self) -> None:
 
         if not self.contacts:
             self.ui.current_contact.setText('no contacts to see here')
@@ -122,7 +122,7 @@ class main_window(QMainWindow):
     def change_contact(self,index) -> None:
 
         if self.current_contact_index == index:
-            pass
+            self.contact_buttons_dict[self.current_contact_index].setChecked(True)
         else:
             self.contact_buttons_dict[self.current_contact_index].setChecked(False)
             self.current_contact_index = index
@@ -136,7 +136,7 @@ class main_window(QMainWindow):
    
    
       
-def mainscreen(db,username,password):
+def mainscreen(db,username,password) -> None:
     runtime = QApplication(sys.argv)
     screen = main_window(db,username)
     screen.show()
