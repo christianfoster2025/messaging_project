@@ -151,6 +151,22 @@ class databaseinterfacer():
         except Exception as e:
             print(f'message storing error{e}')
             return False        
+    
+    def get_mac_address(self,contactID,userID):
+        try:
+            self.interfacer.execute('SELECT wifi_mac_address FROM contacts WHERE userID LIKE ? AND contactID LIKE ?',(userID,contactID))
+            self.connector.commit()
+
+            mac_address = self.interfacer.fetchone()
+            mac_address= mac_address[0]
+
+            return mac_address
+            
+        except Exception as e:
+            print(f'MAC address fetch error: {e}')
+            return None
+    
+    
         
     def close(self) -> None:
         self.interfacer.close()

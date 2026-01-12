@@ -1,10 +1,39 @@
 from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy, QMessageBox 
-from PySide6.QtCore import QSize, Qt, QRect
+from PySide6.QtCore import QSize, Qt, QRect, Signal,QObject
 from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
 from main_window_scripts.encryption import encrypt
 from network import send_message
 import sys
+import socket 
+
+class message_receiver(QObject):
+    def __init__(self):
+
+        self.message_inbound = Signal(str)
+        self.wifi_connection = ''
+    
+    def wifi_message_check(self):
+            self.wifi_connection = socket.socket()
+            port = 8008
+            self.wifi_connection.bind(('', port))
+            print ("socket binded to %s" %(port))
+            self.wifi_connection.listen(5)    
+            print ("socket is listening")
+
+            while True:
+                # Establish connection with client.
+                c, addr = self.wifi_connection.accept()
+                print(c,addr)
+                #print ('Got connection from', addr )
+                received_text =str(c.recv(1024))
+                
+                print(f'{addr}: {received_text[2:-1]}')
+                self.message_inbound.emit(received_text)
+                
+    
+    def receiver_close(self):
+        self.wifi_connection.close()    
 
 
 
@@ -36,16 +65,28 @@ class main_window(QMainWindow):
 
         self.current_contact_ID = self.contacts[self.current_contact_index][1]
         
+        #message receive setup
+        message_checker = message_receiver()
+        message_checker.wifi_message_check()
+        message_checker.message_inbound.connect(self.process_incoming_message)
+        
+        
+    def process_incoming_message(self,content):
+        ...
+        
 
     def new_contact_button(self) -> None:
        add_contact_screen(self.database,self.username)
        self.update_contact_list()
    
+   
+   
+   
     def send(self) -> None:
         unencrypted_text = self.ui.message_input.text()
         encrypted_text = encrypt(unencrypted_text)
         recipientID = self.current_contact_ID
-        if send_message(self.userID,recipientID,encrypted_text):
+        if send_message(self.userID,recipientID,encrypted_text,self.database):
             state = 'sent'
 
             if self.database.store_message(self.userID,recipientID,encrypted_text,state):
@@ -59,6 +100,9 @@ class main_window(QMainWindow):
         
     def exit_programme(self) -> None:
          exit()
+           
+           
+           
            
     def update_contact_list(self) -> None:
         
