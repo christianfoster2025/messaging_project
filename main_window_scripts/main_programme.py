@@ -68,8 +68,10 @@ class main_window(QMainWindow):
         #inital screen setup
         self.update_contact_list()
         self.main_pane_update()
-
-        self.current_contact_ID = self.contacts[self.current_contact_index][1]
+        if self.contacts != []:
+            self.current_contact_ID = self.contacts[self.current_contact_index][1]
+        else:
+            self.current_contact_ID = None
         
    
     def start_receiver(self):
@@ -82,7 +84,7 @@ class main_window(QMainWindow):
         self.thread.start() 
    
     def stop_receiver(self):
-       ... 
+        self.thread.terminate()
    
     @Slot(object)
     def receiver_error(error):

@@ -22,7 +22,7 @@ def send_message(userID,recipientID,contents,db) ->bool:
     #final stage send message
     message = (f'{userID}:{contents}').encode('ascii')            
     wifi_connection = socket.socket()
-    port = 8008
+    port = 12345
     try:
         # connect to the server on local computer
         wifi_connection((local_ip_address, port))
