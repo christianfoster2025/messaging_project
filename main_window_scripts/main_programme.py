@@ -224,30 +224,30 @@ class main_window(QMainWindow):
                 pass
             else:
                 scroller = self.ui.messages_scroll
-            scrollwidget = self.ui.messages_scroll_widget #needs name change in the .UI file
-            vertical = QVBoxLayout()
-            self.current_contact_messages = conversation_pull
-            if  self.current_contact_messages is None:
-                instance = QLabel('No messages to show here')
-                vertical.addWidget(instance)    
-            else:
-                for index in enumerate(self.current_contact_messages):
-                    print(index)
-                    instance = QLineEdit(index[0])
-                    instance.setMinimumSize(QSize(0, 91))
-                    if index[1] == 'received':
-                        instance.setStyleSheet(u'''
-                        background-color:#4693F5;
-                        ''')
-                    else:
-                        instance.setStyleSheet(u'''
-                        background-color:#FFFFFF;
-                        ''')
-    
-                    vertical.addWidget(instance)
+                scrollwidget = self.ui.messages_scroll_widget #needs name change in the .UI file
+                vertical = QVBoxLayout()
+                self.current_contact_messages = conversation_pull
+                if  self.current_contact_messages is None:
+                    instance = QLabel('No messages to show here')
+                    vertical.addWidget(instance)    
+                else:
+                    for index in enumerate(self.current_contact_messages):
+                        print(index)
+                        instance = QLineEdit(index[0])
+                        instance.setMinimumSize(QSize(0, 91))
+                        if index[1] == 'received':
+                            instance.setStyleSheet(u'''
+                            background-color:#4693F5;
+                            ''')
+                        else:
+                            instance.setStyleSheet(u'''
+                            background-color:#FFFFFF;
+                            ''')
         
-            scrollwidget.setLayout(vertical)
-            scroller.setWidget(scrollwidget)
+                        vertical.addWidget(instance)
+            
+                scrollwidget.setLayout(vertical)
+                scroller.setWidget(scrollwidget)
 
         
         #message change needs to be done in here aswell, can probably be merged with chance contact
