@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy, QMessageBox,QWidget, QLineEdit
-from PySide6.QtCore import QSize, Qt, QRect, Signal,QObject
+from PySide6.QtCore import QSize, Qt, QRect, Signal,QObject, QThread, QThreadPool, Slot
 from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
 from main_window_scripts.encryption import encrypt
@@ -8,29 +8,33 @@ import sys
 import socket 
 
 class message_receiver(QObject):
+    error = Signal(object)
+    data = Signal(str)
+    newmessage = Signal(bool)
     def __init__(self):
         super().__init__()
-        self.message_inbound = Signal(str)
-        self.wifi_connection = ''
+        
     
     def wifi_message_check(self):
             self.wifi_connection = socket.socket()
-            port = 8008
+            port = 12345
             self.wifi_connection.bind(('', port))
             print ("socket binded to %s" %(port))
             self.wifi_connection.listen(5)    
             print ("socket is listening")
-    '''
-            while True:
-                # Establish connection with client.
-                c, addr = self.wifi_connection.accept()
-                print(c,addr)
-                #print ('Got connection from', addr )
-                received_text =str(c.recv(1024))
-                
-                print(f'{addr}: {received_text[2:-1]}')
-                self.message_inbound.emit(received_text)
-    '''             
+            try:
+                while True:
+                    # Establish connection with client.
+                    c, addr = self.wifi_connection.accept()
+                    print(c,addr)
+                    #print ('Got connection from', addr )
+                    received_text =str(c.recv(1024))
+                    
+                    print(f'{addr}: {received_text[2:-1]}')
+                    self.newmessage.emit(received_text)
+            except Exception as e:
+                self.error.emit(e)
+           
     
     def receiver_close(self):
         self.wifi_connection.close()    
@@ -67,15 +71,27 @@ class main_window(QMainWindow):
 
         self.current_contact_ID = self.contacts[self.current_contact_index][1]
         
-        #message receive setup
-        
-        '''
-        message_checker = message_receiver()
-        message_checker.wifi_message_check()
-        message_checker.message_inbound.connect(self.process_incoming_message) # FIX
-        '''
-        
+   
+    def start_receiver(self):
+        self.thread = QThread()
+        self.worker = message_receiver()
+        self.worker.moveToThread(self.thread)       
+        self.thread.started.connect(self.worker.wifi_message_check) 
+        self.worker.newmessage.connect(self.process_incoming_message)
+        self.worker.error.connect(self.receiver_error)
+        self.thread.start() 
+   
+    def stop_receiver(self):
+       ... 
+   
+    @Slot(object)
+    def receiver_error(error):
+       print(error)
+       
+   
+    @Slot(str)    
     def process_incoming_message(self,content:str):
+        print(content)
         senderID,message = content.split(':')
         receiverID = self.userID
         state= 'received'
@@ -85,7 +101,7 @@ class main_window(QMainWindow):
         else: 
             QMessageBox.warning(self,'Error','Your Message hasn\'t been saved into the database')
          # stores message in db with state 'received'
-        
+         #needs to emit a flag that calls for a message panel update
 
     def new_contact_button(self) -> None:
        add_contact_screen(self.database,self.username)
@@ -192,6 +208,7 @@ class main_window(QMainWindow):
             self.ui.current_contact.setText('no contacts to see here')
         else:    
             self.ui.current_contact.setText(self.contacts[self.current_contact_index][0])
+        #message change needs to be done in here aswell, can probably be merged with chance contact
 
 
     def change_contact(self,index) -> None:
@@ -215,6 +232,7 @@ def mainscreen(db,username,password) -> None:
     runtime = QApplication(sys.argv)
     screen = main_window(db,username)
     screen.show()
+    screen.start_receiver()
     runtime.exec()
     runtime.shutdown()
     
