@@ -114,7 +114,7 @@ class main_window(QMainWindow):
    
    
     def send(self) -> None:
-        unencrypted_text = self.ui.message_input.text()
+        unencrypted_text = self.ui.message_input.toPlainText()
         encrypted_text = encrypt(unencrypted_text)
         recipientID = self.current_contact_ID
         if send_message(self.userID,recipientID,encrypted_text,self.database):
