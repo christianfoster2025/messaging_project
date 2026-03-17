@@ -14,7 +14,7 @@ class contact_dialogue(QDialog):
         self.database = db
         
         #variable init
-        self.user_userID = db.current_userID(username) #needs adding
+        self.user_userID = db.current_userID(username)
         self.user_wifi_mac = get_mac_address()
         self.user_bluetooth_mac = None
         self.user_public_key = None

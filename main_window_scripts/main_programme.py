@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy, QMessageBox 
+from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy, QMessageBox,QWidget, QLineEdit
 from PySide6.QtCore import QSize, Qt, QRect, Signal,QObject
 from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
@@ -9,7 +9,7 @@ import socket
 
 class message_receiver(QObject):
     def __init__(self):
-
+        super().__init__()
         self.message_inbound = Signal(str)
         self.wifi_connection = ''
     
@@ -20,7 +20,7 @@ class message_receiver(QObject):
             print ("socket binded to %s" %(port))
             self.wifi_connection.listen(5)    
             print ("socket is listening")
-
+    '''
             while True:
                 # Establish connection with client.
                 c, addr = self.wifi_connection.accept()
@@ -30,7 +30,7 @@ class message_receiver(QObject):
                 
                 print(f'{addr}: {received_text[2:-1]}')
                 self.message_inbound.emit(received_text)
-                
+    '''             
     
     def receiver_close(self):
         self.wifi_connection.close()    
@@ -53,12 +53,14 @@ class main_window(QMainWindow):
         self.database = db #db link
         self.username = username
         self.userID = self.database.current_userID(self.username)
-        self.contacts =[]
-        self.contact_buttons_dict = {}
+        self.contacts =[] #stores list of tuples with alias and user ids
+        self.contact_buttons_dict = {} # stores button objects
+        self.contactvert = None
 
-        self.current_contact_index = 0
+        self.current_contact_index = 0 
         self.current_contact_messages = []
-
+        self.firstrun = True
+        
         #inital screen setup
         self.update_contact_list()
         self.main_pane_update()
@@ -66,20 +68,30 @@ class main_window(QMainWindow):
         self.current_contact_ID = self.contacts[self.current_contact_index][1]
         
         #message receive setup
+        
+        '''
         message_checker = message_receiver()
         message_checker.wifi_message_check()
-        message_checker.message_inbound.connect(self.process_incoming_message)
+        message_checker.message_inbound.connect(self.process_incoming_message) # FIX
+        '''
         
+    def process_incoming_message(self,content:str):
+        senderID,message = content.split(':')
+        receiverID = self.userID
+        state= 'received'
         
-    def process_incoming_message(self,content):
-        ...
+        if self.database.store_message(self.userID,receiverID,message,state):
+            self.ui.message_input.setText('')
+        else: 
+            QMessageBox.warning(self,'Error','Your Message hasn\'t been saved into the database')
+         # stores message in db with state 'received'
         
 
     def new_contact_button(self) -> None:
        add_contact_screen(self.database,self.username)
        self.update_contact_list()
    
-   
+  
    
    
     def send(self) -> None:
@@ -106,20 +118,22 @@ class main_window(QMainWindow):
            
     def update_contact_list(self) -> None:
         
-        self.scroller = self.ui.Contactlist_scroll
-        self.scrollwidget = self.ui.Contactlist_scroll_widget
-        self.vertical = QVBoxLayout()
+        scroller = self.ui.Contactlist_scroll
+        scrollwidget = self.ui.Contactlist_scroll_widget
+        if self.firstrun:
         
-        for i in reversed(range(self.vertical.count())): 
-            self.vertical.itemAt(i).widget().setParent(None) #BROKEN NEEDS FIXING TODO, WIDGETS DO NOT CLEAR 
-
-        self.contacts = self.database.getcontacts(self.userID)
-        print(self.contacts)
-        if self.contacts == False:
-            instance = QLabel('No contacts to show here')
-            self.vertical.addWidget(instance)    
-        else:
-            
+        
+            self.contactvert= QVBoxLayout()
+            self.contacts = self.database.getcontacts(self.userID)
+            if self.contacts == False:
+                instance = QLabel('No contacts to show here')
+                self.contactvert.addWidget(instance)    
+        
+        if len(self.contacts) != len(self.contact_buttons_dict):
+            for item in range(len(self.contact_buttons_dict)):
+                self.contact_buttons_dict[item].setParent(None)
+                self.contact_buttons_dict[item].deleteLater()
+                
             for index in range (len(self.contacts)):
                 print(index)
                 instance = QPushButton(self.contacts[index][0])
@@ -136,24 +150,41 @@ class main_window(QMainWindow):
                 instance.setCheckable(True)
                 instance.setChecked(False)
                 self.contact_buttons_dict[index] = instance
-                self.vertical.addWidget(instance)
+                self.contactvert.addWidget(instance)
                
         #self.horizontalSpacer = QSpacerItem(160, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum) #change size policy to (screenheight - 90(len(self.contacts)))
-        #self.vertical.addItem(self.horizontalSpacer) #TODO logic needs implementing
+        #vertical.addItem(self.horizontalSpacer) #TODO logic needs implementing
         
-        self.scrollwidget.setLayout(self.vertical)
-        self.scroller.setWidget(self.scrollwidget)
+        scrollwidget.setLayout(self.contactvert)
+        scroller.setWidget(scrollwidget)
     
     
     def message_panel_setup(self) -> None:
-        self.scroller = self.ui.messages_scroll
-        self.scrollwidget = self.ui.scrollAreaWidgetContents #needs name change in the .UI file
-        self.vertical = QVBoxLayout()
-
-        if self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1]) is None:
-            ...
+        scroller = self.ui.messages_scroll
+        scrollwidget = self.ui.messages_scroll_widget #needs name change in the .UI file
+        vertical = QVBoxLayout()
+        self.current_contact_messages = self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1])
+        if  self.current_contact_messages is None:
+            instance = QLabel('No messages to show here')
+            vertical.addWidget(instance)    
+        else:
+            for index in enumerate(self.current_contact_messages):
+                print(index)
+                instance = QLineEdit(index[0])
+                instance.setMinimumSize(QSize(0, 91))
+                if index[1] == 'received':
+                    instance.setStyleSheet(u'''
+                    background-color:#4693F5;
+                    ''')
+                else:
+                    instance.setStyleSheet(u'''
+                    background-color:#FFFFFF;
+                    ''')
+ 
+                vertical.addWidget(instance)
     
-       
+        scrollwidget.setLayout(vertical)
+        scroller.setWidget(scrollwidget)
    
     def main_pane_update(self) -> None:
 

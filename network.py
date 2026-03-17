@@ -20,7 +20,7 @@ def send_message(userID,recipientID,contents,db) ->bool:
                 local_ip_address = ip_match.group()
                 
     #final stage send message
-    message = contents.encode('ascii')            
+    message = (f'{userID}:{contents}').encode('ascii')            
     wifi_connection = socket.socket()
     port = 8008
     try:
