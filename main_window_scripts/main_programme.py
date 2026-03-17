@@ -28,7 +28,7 @@ class message_receiver(QObject):
                     c, addr = self.wifi_connection.accept()
                     print(c,addr)
                     #print ('Got connection from', addr )
-                    received_text =str(c.recv(1024))
+                    received_text =c.recv(1024).decode('utf-8')
                     
                     print(f'{addr}: {received_text[2:-1]}')
                     self.newmessage.emit(received_text)
