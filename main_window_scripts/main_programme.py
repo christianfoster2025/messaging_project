@@ -4,8 +4,8 @@ from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
 from main_window_scripts.encryption import encrypt
 from network import send_message
-import sys
-import socket 
+import sys,socket,time
+
 
 class message_receiver(QObject):
     error = Signal(object)
@@ -70,6 +70,7 @@ class main_window(QMainWindow):
         self.main_pane_update()
         if self.contacts != []:
             self.current_contact_ID = self.contacts[self.current_contact_index][1]
+            self.contact_buttons_dict[self.current_contact_index].setChecked(True)
         else:
             self.current_contact_ID = None
         
@@ -129,6 +130,8 @@ class main_window(QMainWindow):
         
         
     def exit_programme(self) -> None:
+         self.stop_receiver()
+         time.sleep(1)
          exit()
            
            
@@ -176,7 +179,7 @@ class main_window(QMainWindow):
         scrollwidget.setLayout(self.contactvert)
         scroller.setWidget(scrollwidget)
     
-    
+# ===========================================================depreciated================================================================
     def message_panel_setup(self) -> None:
         scroller = self.ui.messages_scroll
         scrollwidget = self.ui.messages_scroll_widget #needs name change in the .UI file
@@ -203,13 +206,50 @@ class main_window(QMainWindow):
     
         scrollwidget.setLayout(vertical)
         scroller.setWidget(scrollwidget)
-   
+ #========================================================depreciated end===============================================================  
+
+
+
+
+
     def main_pane_update(self) -> None:
 
         if not self.contacts:
             self.ui.current_contact.setText('no contacts to see here')
         else:    
             self.ui.current_contact.setText(self.contacts[self.current_contact_index][0])
+
+            conversation_pull = self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1]) 
+            if conversation_pull == self.current_contact_messages:
+                pass
+            else:
+                scroller = self.ui.messages_scroll
+            scrollwidget = self.ui.messages_scroll_widget #needs name change in the .UI file
+            vertical = QVBoxLayout()
+            self.current_contact_messages = conversation_pull
+            if  self.current_contact_messages is None:
+                instance = QLabel('No messages to show here')
+                vertical.addWidget(instance)    
+            else:
+                for index in enumerate(self.current_contact_messages):
+                    print(index)
+                    instance = QLineEdit(index[0])
+                    instance.setMinimumSize(QSize(0, 91))
+                    if index[1] == 'received':
+                        instance.setStyleSheet(u'''
+                        background-color:#4693F5;
+                        ''')
+                    else:
+                        instance.setStyleSheet(u'''
+                        background-color:#FFFFFF;
+                        ''')
+    
+                    vertical.addWidget(instance)
+        
+            scrollwidget.setLayout(vertical)
+            scroller.setWidget(scrollwidget)
+
+        
         #message change needs to be done in here aswell, can probably be merged with chance contact
 
 
@@ -223,11 +263,6 @@ class main_window(QMainWindow):
             self.current_contact_ID = self.contacts[self.current_contact_index][1]
             self.main_pane_update()
   
-    
-   
-   
-   
-   
    
       
 def mainscreen(db,username,password) -> None:
