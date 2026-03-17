@@ -3,7 +3,7 @@ from authentication_scripts.signup import signup_screen
 from authentication_scripts.start import start_screen
 
 
-def startup(db) -> tuple: 
+def setup(db) -> tuple: 
     #checking db exists
     
     login:bool = False
@@ -32,4 +32,4 @@ def startup(db) -> tuple:
         
 #allows this file to be ran seperately to facilitate testing        
 if __name__ == '__main__':
-    startup()
+    setup()

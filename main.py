@@ -1,4 +1,4 @@
-from authentication_scripts.setup import startup
+from authentication_scripts.setup import setup
 from main_window_scripts.main_programme import mainscreen
 from database import databaseinterfacer
 
@@ -9,7 +9,7 @@ def main() -> None: #main programme runtime, this is the script that will actual
     password:str = ''
     userID:str = ''
     db = databaseinterfacer()
-    username,password = startup(db)
+    username,password = setup(db)
     mainscreen(db,username,password)
     db.close()
     
