@@ -25,7 +25,7 @@ def send_message(userID,recipientID,contents,db) ->bool:
     port = 12345
     try:
         # connect to the server on local computer
-        wifi_connection((local_ip_address, port))
+        wifi_connection.connect((local_ip_address, port))
         wifi_connection.send(message)
 
         # close the connection
