@@ -11,29 +11,33 @@ def send_message(userID,recipientID,contents,db) ->bool:
 
     # Get the ARP table
     arp_table = os.popen('arp -a').read()
-    # Search for the MAC address in the ARP table
+    # Search for the MAC address in the arp table
     for line in arp_table.splitlines():
         if mac_address.lower() in line.lower() or mac_address.lower().replace(':','-') in line.lower():
-            # Extract the IP address
+            # Extract the IP address from arp table
             ip_match = re.search(r'\d+\.\d+\.\d+\.\d+', line)
             if ip_match:
                 local_ip_address = ip_match.group()
-                
-    #final stage send message
+            else:
+                return False,'device not found'
+        else:
+            return False,'device not found'
+    print(local_ip_address)            
+    # attaches userID 
     message = (f'{userID}:{contents}').encode('ascii')            
     wifi_connection = socket.socket()
     port = 12345
     try:
-        # connect to the server on local computer
+      
         wifi_connection.connect((local_ip_address, port))
         wifi_connection.send(message)
 
         # close the connection
         wifi_connection.close()
-        return True
+        return True,''
     except ConnectionRefusedError:
         print('client not online')
-        return False
+        return False, 'message failed to send'
     
 
 

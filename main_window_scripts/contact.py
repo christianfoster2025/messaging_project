@@ -20,12 +20,12 @@ class contact_dialogue(QDialog):
         self.user_public_key = None
         self.attempts = 0
         
-        #screen setup
+        #screen setup self contact info
         self.ui.contact_info.setPlainText(f'Wi-Fi Mac Address: {self.user_wifi_mac} \nBluetooth Mac Address: {self.user_bluetooth_mac} \nPublic Key: {self.user_public_key} \nUserID: {self.user_userID}')
         
         
     def accept(self) -> None :
-        
+        #collect fields from UI
         alias=self.ui.alias_entry.text()
         wifi_mac=self.ui.wifi_mac_entry.text()
         bluetooth_mac=self.ui.bluetooth_mac_entry.text()
@@ -33,12 +33,14 @@ class contact_dialogue(QDialog):
         current_userid=self.user_userID
         public_key=self.ui.publickey_entry.text()
         
+        #very basic vallidation
         if zerocheck(alias) or zerocheck(wifi_mac) or zerocheck(bluetooth_mac) or \
             zerocheck(contactid) or zerocheck(public_key):
             self.attempts +=1
             self.ui.errorlabel.setText('Please fill all fields.')
-        # TODO alias check, check all things havent been entered before
-        if self.database.contact_preexist_check(alias, wifi_mac, bluetooth_mac, contactid,public_key):
+            
+        # check doesnt exist
+        elif self.database.contact_preexist_check(alias, wifi_mac, bluetooth_mac, contactid,public_key):
             self.attempts += 1
             self.ui.errorlabel.setText('Make sure the contact is unique')
         
@@ -46,28 +48,24 @@ class contact_dialogue(QDialog):
         else: 
             print('testing accept')
             try:
-                self.database.contact_user_add(alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key)
+                self.database.contact_user_add(self.user_userID,alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key)
                 super().accept()
                 self.close()
             except:
                 self.ui.errorlabel.setText('Database error try again.')
         
-        if self.attempts > 3:
+        if self.attempts > 3: #if fails 3 times ends
             super().reject()
             
     def reject(self) -> None:
         super().reject()
         
 def add_contact_screen(db,username):
-    
-    dialogue = contact_dialogue(db,username)
+    dialogue = contact_dialogue(db,username) #instantiation
     dialogue.show()
-    
-    result= dialogue.exec_() 
+    result= dialogue.exec() #runtime within main window
     dialogue.close()
-    #initaties main loop
-    
-    #runtime.shutdown() # when mainloop is ended kills qapplication
+   
     
 
     

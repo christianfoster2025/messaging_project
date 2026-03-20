@@ -84,9 +84,9 @@ class databaseinterfacer():
             print(f'contact user add error: {e}')
             return False
             
-    def contact_preexist_check(self, alias:str, wifi_mac:str, bluetooth_mac:str, contactid:str,public_key:str) -> bool:
+    def contact_preexist_check(self,userid:str, alias:str, wifi_mac:str, bluetooth_mac:str, contactid:str,public_key:str) -> bool:
         try:
-            self.interfacer.execute('SELECT * FROM contacts WHERE alias LIKE ? OR contactID LIKE ? OR public_key LIKE ? OR wifi_mac_address LIKE ? OR bluetooth_mac_address LIKE ?',(alias, wifi_mac, bluetooth_mac, contactid,public_key))
+            self.interfacer.execute('SELECT * FROM contacts WHERE userID LIKE ? AND (alias LIKE ? OR contactID LIKE ? OR public_key LIKE ? OR wifi_mac_address LIKE ? OR bluetooth_mac_address LIKE ?)',(userid, alias, wifi_mac, bluetooth_mac, contactid,public_key))
             self.connector.commit()
             if self.interfacer.fetchone():
                 return True # present in db so cant continue
@@ -131,6 +131,7 @@ class databaseinterfacer():
                 return message_list
             else:
                 message_list = result # returns a list of tuples to be unpacked as needed
+                print(message_list)
                 return message_list
         except Exception as e:
             print(f'get conversations error: {e}')

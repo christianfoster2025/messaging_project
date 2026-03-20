@@ -15,7 +15,7 @@ class message_receiver(QObject):
         super().__init__()
         
     
-    def wifi_message_check(self):
+    def wifi_message_check(self)-> None:
             self.wifi_connection = socket.socket()
             port = 12345
             self.wifi_connection.bind(('', port))
@@ -36,7 +36,7 @@ class message_receiver(QObject):
                 self.error.emit(e)
            
     
-    def receiver_close(self):
+    def receiver_close(self)-> None:
         self.wifi_connection.close()    
 
 
@@ -75,7 +75,7 @@ class main_window(QMainWindow):
             self.current_contact_ID = None
         
    
-    def start_receiver(self):
+    def start_receiver(self) -> None:
         self.thread = QThread()
         self.worker = message_receiver()
         self.worker.moveToThread(self.thread)       
@@ -84,11 +84,13 @@ class main_window(QMainWindow):
         self.worker.error.connect(self.receiver_error)
         self.thread.start() 
    
-    def stop_receiver(self):
+    def stop_receiver(self)-> None:
+        
         self.thread.terminate()
-   
+        #will need some extra work not functioning properly
+        
     @Slot(object)
-    def receiver_error(error):
+    def receiver_error(error:object) -> None:
        print(error)
        
    
@@ -106,6 +108,7 @@ class main_window(QMainWindow):
          # stores message in db with state 'received'
          #needs to emit a flag that calls for a message panel update
 
+
     def new_contact_button(self) -> None:
        add_contact_screen(self.database,self.username)
        self.update_contact_list()
@@ -117,16 +120,17 @@ class main_window(QMainWindow):
         unencrypted_text = self.ui.message_input.toPlainText()
         encrypted_text = encrypt(unencrypted_text)
         recipientID = self.current_contact_ID
-        if send_message(self.userID,recipientID,encrypted_text,self.database):
+        success,error = send_message(self.userID,recipientID,encrypted_text,self.database)
+        if success:
             state = 'sent'
 
             if self.database.store_message(self.userID,recipientID,encrypted_text,state):
                 self.ui.message_input.setText('')
 
             else: 
-                QMessageBox.warning(self,'Error','Your Message hasn\'t been saved into the database')
+                QMessageBox.warning(self,'Error: message not stored in database')
         else:
-            QMessageBox.warning(self,'Error','Your Message hasn\'t successfully sent. Please try again.')
+            QMessageBox.warning(self,f'Error: {error} \nPlease try again.')
         
         
     def exit_programme(self) -> None:
@@ -146,14 +150,18 @@ class main_window(QMainWindow):
         
             self.contactvert= QVBoxLayout()
             self.contacts = self.database.getcontacts(self.userID)
+            self.contactvert.addStretch()
             if self.contacts == False:
                 instance = QLabel('No contacts to show here')
                 self.contactvert.addWidget(instance)    
         
         if len(self.contacts) != len(self.contact_buttons_dict):
-            for item in range(len(self.contact_buttons_dict)):
-                self.contact_buttons_dict[item].setParent(None)
-                self.contact_buttons_dict[item].deleteLater()
+            while self.contactvert.count():
+                item = self.contactvert.takeAt(0)
+                if item.widget():
+                    item.widget().deleteLater()
+                #self.contact_buttons_dict[item].takeAt(0)
+                #self.contact_buttons_dict[item].deleteLater()
                 
             for index in range (len(self.contacts)):
                 print(index)
@@ -179,38 +187,6 @@ class main_window(QMainWindow):
         scrollwidget.setLayout(self.contactvert)
         scroller.setWidget(scrollwidget)
     
-# ===========================================================depreciated================================================================
-    def message_panel_setup(self) -> None:
-        scroller = self.ui.messages_scroll
-        scrollwidget = self.ui.messages_scroll_widget #needs name change in the .UI file
-        vertical = QVBoxLayout()
-        self.current_contact_messages = self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1])
-        if  self.current_contact_messages is None:
-            instance = QLabel('No messages to show here')
-            vertical.addWidget(instance)    
-        else:
-            for index in enumerate(self.current_contact_messages):
-                print(index)
-                instance = QLineEdit(index[0])
-                instance.setMinimumSize(QSize(0, 91))
-                if index[1] == 'received':
-                    instance.setStyleSheet(u'''
-                    background-color:#4693F5;
-                    ''')
-                else:
-                    instance.setStyleSheet(u'''
-                    background-color:#FFFFFF;
-                    ''')
- 
-                vertical.addWidget(instance)
-    
-        scrollwidget.setLayout(vertical)
-        scroller.setWidget(scrollwidget)
- #========================================================depreciated end===============================================================  
-
-
-
-
 
     def main_pane_update(self) -> None:
 
@@ -233,25 +209,24 @@ class main_window(QMainWindow):
                 else:
                     for index in enumerate(self.current_contact_messages):
                         print(index)
-                        instance = QLineEdit(index[0])
+                        instance = QLineEdit(str(index[1][0]))
                         instance.setMinimumSize(QSize(0, 91))
-                        if index[1] == 'received':
-                            instance.setStyleSheet(u'''
-                            background-color:#4693F5;
-                            ''')
-                        else:
+                        print(index[1][1])
+                        if index[1][1] == 'received':
                             instance.setStyleSheet(u'''
                             background-color:#FFFFFF;
                             ''')
-        
+                        else:
+                            instance.setStyleSheet(u'''
+                            background-color:#4693F5;
+                            ''')
+                        instance.setReadOnly(True)
                         vertical.addWidget(instance)
             
                 scrollwidget.setLayout(vertical)
                 scroller.setWidget(scrollwidget)
 
-        
-        #message change needs to be done in here aswell, can probably be merged with chance contact
-
+       
 
     def change_contact(self,index) -> None:
 
