@@ -64,6 +64,8 @@ class signup_window(QMainWindow):
     
 def signup_screen(db):
     runtime = QApplication(sys.argv)
+    runtime.setStyle("Fusion")
+    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
     screen = signup_window(db)
     screen.show()
     runtime.exec()

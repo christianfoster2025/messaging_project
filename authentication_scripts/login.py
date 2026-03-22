@@ -55,6 +55,8 @@ class login_window(QMainWindow):
     
 def login_screen(db):
     runtime = QApplication(sys.argv)
+    runtime.setStyle("Fusion")
+    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
     screen = login_window(db)
     screen.show()
     runtime.exec()

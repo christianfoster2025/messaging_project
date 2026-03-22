@@ -247,6 +247,7 @@ class main_window(QMainWindow):
 def mainscreen(db,username,password) -> None:
     runtime = QApplication(sys.argv)
     runtime.setStyle("Fusion")
+    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
     screen = main_window(db,username)
     screen.show()
     screen.start_receiver()
