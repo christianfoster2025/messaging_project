@@ -116,7 +116,7 @@ class main_window(QMainWindow):
         receiverID = self.userID
         state= 'received'
         
-        if self.database.store_message(self.userID,receiverID,message,state):
+        if self.database.store_message(senderID,receiverID,message,state):
             self.main_pane_update()
         else: 
             QMessageBox.warning(self,'Error',f'Your Message, contents: {content} hasn\'t been saved into the database')
