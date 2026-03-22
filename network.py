@@ -5,7 +5,7 @@ def send_message(userID,recipientID,contents,db) ->bool:
     #first get mac address from recipient ID
     mac_address = db.get_mac_address(recipientID,userID)
     if mac_address is None:
-        return False
+        return False,'mac address not found'
     
     #next get local ip to send
 

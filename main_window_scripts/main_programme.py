@@ -9,8 +9,8 @@ import sys,socket,time
 
 class message_receiver(QObject):
     error = Signal(object)
-    data = Signal(str)
-    newmessage = Signal(bool)
+
+    newmessage = Signal(str)
     def __init__(self):
         super().__init__()
         
@@ -32,6 +32,7 @@ class message_receiver(QObject):
                     
                     print(f'{addr}: {received_text[2:-1]}')
                     self.newmessage.emit(received_text)
+      
             except Exception as e:
                 self.error.emit(e)
            
@@ -144,7 +145,7 @@ class main_window(QMainWindow):
             else: 
                 QMessageBox.warning(self,'Error: message not stored in database')
         else:
-            QMessageBox.warning(self,f'Error: {error} \nPlease try again.')
+            QMessageBox.warning(self,'Error',f'Error: {error} \nPlease try again.')
         
         
     def exit_programme(self) -> None:
