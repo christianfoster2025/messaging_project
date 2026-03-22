@@ -30,7 +30,7 @@ class message_receiver(QObject):
                     #print ('Got connection from', addr )
                     received_text =c.recv(1024).decode('utf-8')
                     
-                    print(f'{addr}: {received_text[2:-1]}')
+                    #print(f'{addr}: {received_text[2:-1]}')
                     self.newmessage.emit(received_text)
       
             except Exception as e:
