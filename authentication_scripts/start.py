@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
 from ui_files.authentication.start_screen import Ui_MainWindow
+from PySide6.QtCore import Qt
 import sys
 
 class start_window(QMainWindow): 
