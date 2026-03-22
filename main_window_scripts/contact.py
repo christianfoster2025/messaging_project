@@ -40,7 +40,7 @@ class contact_dialogue(QDialog):
             self.ui.errorlabel.setText('Please fill all fields.')
             
         # check doesnt exist
-        elif self.database.contact_preexist_check(alias, wifi_mac, bluetooth_mac, contactid,public_key):
+        elif self.database.contact_preexist_check(self.user_userID,alias, wifi_mac, bluetooth_mac, contactid,public_key):
             self.attempts += 1
             self.ui.errorlabel.setText('Make sure the contact is unique')
         
@@ -48,7 +48,7 @@ class contact_dialogue(QDialog):
         else: 
             print('testing accept')
             try:
-                self.database.contact_user_add(self.user_userID,alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key)
+                self.database.contact_user_add(alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key)
                 super().accept()
                 self.close()
             except:

@@ -150,7 +150,7 @@ class databaseinterfacer():
             self.connector.commit()
             return True
         except Exception as e:
-            print(f'message storing error{e}')
+            print(f'message storing error: {e}')
             return False        
     
     def get_mac_address(self,contactID,userID):

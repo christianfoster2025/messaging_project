@@ -57,13 +57,24 @@ class main_window(QMainWindow):
         self.database = db #db link
         self.username = username
         self.userID = self.database.current_userID(self.username)
+
+        #contact stuff
         self.contacts =[] #stores list of tuples with alias and user ids
         self.contact_buttons_dict = {} # stores button objects
-        self.contactvert = None
-
+        self.contact_pane_vertical = None
         self.current_contact_index = 0 
         self.current_contact_messages = []
+        
+        #contact UI setup
+        self.contact_pane_scroller = self.ui.Contactlist_scroll
+        self.contact_pane_scrollwidget = self.ui.Contactlist_scroll_widget
+        self.contact_pane_vertical= QVBoxLayout()
         self.firstrun = True
+
+        #contact pane setup
+        self.main_pane_scroller = self.ui.messages_scroll
+        self.main_pane_scrollwidget = self.ui.messages_scroll_widget
+        self.main_pane_vertical = QVBoxLayout()
         
         #inital screen setup
         self.update_contact_list()
@@ -73,6 +84,9 @@ class main_window(QMainWindow):
             self.contact_buttons_dict[self.current_contact_index].setChecked(True)
         else:
             self.current_contact_ID = None
+        
+        
+        
         
    
     def start_receiver(self) -> None:
@@ -142,70 +156,58 @@ class main_window(QMainWindow):
            
            
     def update_contact_list(self) -> None:
-        
-        scroller = self.ui.Contactlist_scroll
-        scrollwidget = self.ui.Contactlist_scroll_widget
-        if self.firstrun:
-        
-        
-            self.contactvert= QVBoxLayout()
-            self.contacts = self.database.getcontacts(self.userID)
-            self.contactvert.addStretch()
+        self.contacts = self.database.getcontacts(self.userID) #pulls current contact list from db
+        if self.firstrun: #edge case because only on start of programme can you have 0 contacts, contacts cant be deleted
+            self.firstrun = False
             if self.contacts == False:
                 instance = QLabel('No contacts to show here')
-                self.contactvert.addWidget(instance)    
+                self.contact_pane_vertical.addWidget(instance)    
         
-        if len(self.contacts) != len(self.contact_buttons_dict):
-            while self.contactvert.count():
-                item = self.contactvert.takeAt(0)
+        if len(self.contacts) != len(self.contact_buttons_dict): #checks if any contacts have been added, stops if not
+            while self.contact_pane_vertical.count():
+                item = self.contact_pane_vertical.takeAt(0) #pulls one widget from the pane
                 if item.widget():
-                    item.widget().deleteLater()
-                #self.contact_buttons_dict[item].takeAt(0)
-                #self.contact_buttons_dict[item].deleteLater()
+                    item.widget().deleteLater()#deletes widget
+                self.contact_buttons_dict.clear() #clears dict
                 
-            for index in range (len(self.contacts)):
-                print(index)
+            for index in range (len(self.contacts)): #iterates through the contact list
                 instance = QPushButton(self.contacts[index][0])
-                instance.clicked.connect(lambda checked, indx=index: self.change_contact(indx))
+                instance.clicked.connect(lambda checked, indx=index: self.change_contact(indx)) #uses pass by value to set up button to connect to right contact
                 instance.setMinimumSize(QSize(0, 91))
                 instance.setStyleSheet(u'''
                 QPushButton::checked{
                     background-color: #ffd2cf;
                 }
-                QPushButton{
-                    
-                    
+                QPushButton{ 
                 }''')
                 instance.setCheckable(True)
                 instance.setChecked(False)
                 self.contact_buttons_dict[index] = instance
-                self.contactvert.addWidget(instance)
-               
-        #self.horizontalSpacer = QSpacerItem(160, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum) #change size policy to (screenheight - 90(len(self.contacts)))
-        #vertical.addItem(self.horizontalSpacer) #TODO logic needs implementing
-        
-        scrollwidget.setLayout(self.contactvert)
-        scroller.setWidget(scrollwidget)
+                self.contact_pane_vertical.addWidget(instance)
+        self.contact_pane_vertical.addStretch() #groups widgets at top
+        self.contact_pane_scrollwidget.setLayout(self.contact_pane_vertical)
+        self.contact_pane_scroller.setWidget(self.contact_pane_scrollwidget) #displays
     
 
     def main_pane_update(self) -> None:
-
+        
         if not self.contacts:
             self.ui.current_contact.setText('no contacts to see here')
         else:    
             self.ui.current_contact.setText(self.contacts[self.current_contact_index][0])
 
             conversation_pull = self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1]) 
-            if conversation_pull == self.current_contact_messages:
-                pass
-            else:
-                scroller = self.ui.messages_scroll
-                scrollwidget = self.ui.messages_scroll_widget #needs name change in the .UI file
-                vertical = QVBoxLayout()
+            if conversation_pull != self.current_contact_messages:
+                while self.main_pane_vertical.count():
+                    item = self.main_pane_vertical.takeAt(0) #pulls one widget from the pane
+                    if item.widget():
+                        item.widget().deleteLater()#deletes widget
+                    
+                
                 self.current_contact_messages = conversation_pull
                 if  self.current_contact_messages is None:
                     instance = QLabel('No messages to show here')
-                    vertical.addWidget(instance)    
+                    self.main_pane_vertical.addWidget(instance)    
                 else:
                     for index in enumerate(self.current_contact_messages):
                         print(index)
@@ -221,10 +223,10 @@ class main_window(QMainWindow):
                             background-color:#4693F5;
                             ''')
                         instance.setReadOnly(True)
-                        vertical.addWidget(instance)
+                        self.main_pane_vertical.addWidget(instance)
             
-                scrollwidget.setLayout(vertical)
-                scroller.setWidget(scrollwidget)
+                self.main_pane_scrollwidget.setLayout(self.main_pane_vertical)
+                self.main_pane_scroller.setWidget(self.main_pane_scrollwidget)
 
        
 
