@@ -30,7 +30,7 @@ class message_receiver(QObject):
                     #print ('Got connection from', addr )
                     received_text =c.recv(1024).decode('utf-8')
                     
-                    print(f'{addr}: {received_text[2:-1]}')
+                    #print(f'{addr}: {received_text[2:-1]}')
                     self.newmessage.emit(received_text)
       
             except Exception as e:
@@ -117,9 +117,9 @@ class main_window(QMainWindow):
         state= 'received'
         
         if self.database.store_message(self.userID,receiverID,message,state):
-            self.ui.message_input.setText('')
+            self.main_pane_update()
         else: 
-            QMessageBox.warning(self,'Error','Your Message hasn\'t been saved into the database')
+            QMessageBox.warning(self,'Error',f'Your Message, contents: {content} hasn\'t been saved into the database')
          # stores message in db with state 'received'
          #needs to emit a flag that calls for a message panel update
 
@@ -141,6 +141,7 @@ class main_window(QMainWindow):
 
             if self.database.store_message(self.userID,recipientID,encrypted_text,state):
                 self.ui.message_input.setText('')
+                self.main_pane_update()
 
             else: 
                 QMessageBox.warning(self,'Error: message not stored in database')
@@ -225,7 +226,7 @@ class main_window(QMainWindow):
                             ''')
                         instance.setReadOnly(True)
                         self.main_pane_vertical.addWidget(instance)
-            
+                self.contact_pane_vertical.addStretch()
                 self.main_pane_scrollwidget.setLayout(self.main_pane_vertical)
                 self.main_pane_scroller.setWidget(self.main_pane_scrollwidget)
 
