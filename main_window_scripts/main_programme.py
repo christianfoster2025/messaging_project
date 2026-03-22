@@ -246,13 +246,14 @@ class main_window(QMainWindow):
       
 def mainscreen(db,username,password) -> None:
     runtime = QApplication(sys.argv)
+    runtime.setStyle("Fusion")
     screen = main_window(db,username)
     screen.show()
     screen.start_receiver()
     runtime.exec()
     runtime.shutdown()
     
-    
+
 if __name__ == '__main__':
     pass
 
