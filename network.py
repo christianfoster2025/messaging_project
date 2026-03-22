@@ -6,16 +6,19 @@ def send_message(userID,recipientID,contents,db) ->bool:
     mac_address = db.get_mac_address(recipientID,userID)
     if mac_address is None:
         return False
-    
+    print(mac_address)
     #next get local ip to send
 
     # Get the ARP table
     arp_table = os.popen('arp -a').read()
+    print(arp_table)
     # Search for the MAC address in the arp table
     for line in arp_table.splitlines():
+        print(line)
         if mac_address.lower() in line.lower() or mac_address.lower().replace(':','-') in line.lower():
             # Extract the IP address from arp table
             ip_match = re.search(r'\d+\.\d+\.\d+\.\d+', line)
+            print(ip_match)
             if ip_match:
                 local_ip_address = ip_match.group()
             else:
