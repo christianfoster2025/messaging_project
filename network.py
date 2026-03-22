@@ -22,10 +22,9 @@ def send_message(userID,recipientID,contents,db) ->bool:
             print(ip_match)
             if ip_match:
                 local_ip_address = ip_match.group()
-            else:
-                return False,'device not found'
-        else:
-            return False,'device not found'
+            
+    if not local_ip_address:
+        return False,'device not found'
     print(local_ip_address)            
     # attaches userID 
     message = (f'{userID}:{contents}').encode('ascii')            
