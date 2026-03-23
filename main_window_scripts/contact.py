@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QMainWindow,QApplication, QDialog
+from PySide6.QtCore import Qt
 from ui_files.main_window.contact_dialogue import Ui_Dialog
 import sys
 from main_window_scripts.encryption import zerocheck
@@ -22,7 +23,11 @@ class contact_dialogue(QDialog):
         
         #screen setup self contact info
         self.ui.contact_info.setPlainText(f'Wi-Fi Mac Address: {self.user_wifi_mac} \nBluetooth Mac Address: {self.user_bluetooth_mac} \nPublic Key: {self.user_public_key} \nUserID: {self.user_userID}')
-        
+        self.ui.contact_info.setEnabled(True)    # Must be True to interact
+        self.ui.contact_info.setTextInteractionFlags(
+            Qt.TextInteractionFlag.TextSelectableByMouse | 
+            Qt.TextInteractionFlag.TextSelectableByKeyboard
+            )
         
     def accept(self) -> None :
         #collect fields from UI

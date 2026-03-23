@@ -21,7 +21,7 @@ class start_window(QMainWindow):
     
 def start_screen():
     runtime = QApplication(sys.argv)
-    runtime.setStyle("Fusion")
+  
     runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
     screen = start_window()
     screen.show()

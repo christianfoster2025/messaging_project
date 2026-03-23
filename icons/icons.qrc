@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>send.png</file>
+        <file>power.png</file>
+        <file>plus.png</file>
+        <file>user.png</file>
+    </qresource>
+</RCC>

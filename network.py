@@ -43,6 +43,8 @@ def send_message(userID,recipientID,contents,db) ->bool:
         return False, 'message failed to send'
     
 
-
+if __name__ == '__main__':
+    ip = socket.gethostbyname(socket.gethostname())
+    print(ip)
 
     

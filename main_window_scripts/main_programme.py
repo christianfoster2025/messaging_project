@@ -1,10 +1,12 @@
 from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy, QMessageBox,QWidget, QLineEdit
 from PySide6.QtCore import QSize, Qt, QRect, Signal,QObject, QThread, QThreadPool, Slot
+from PySide6.QtGui import QIcon, QPixmap
 from ui_files.main_window.main_screen import Ui_MainWindow
 from main_window_scripts.contact import add_contact_screen
 from main_window_scripts.encryption import encrypt
 from network import send_message
 import sys,socket,time
+import icons 
 
 
 class message_receiver(QObject):
@@ -51,6 +53,7 @@ class main_window(QMainWindow):
 
         #button connections
         self.ui.exit_button.clicked.connect(self.exit_programme)
+        self.ui.send_button.setIcon(QIcon(':/send.png'))
         self.ui.send_button.clicked.connect(self.send)
         self.ui.add_contact_button.clicked.connect(self.new_contact_button)
                    
@@ -174,13 +177,34 @@ class main_window(QMainWindow):
                 
             for index in range (len(self.contacts)): #iterates through the contact list
                 instance = QPushButton(self.contacts[index][0])
+                #instance.setIcon(QIcon(':/user.png'))
+
                 instance.clicked.connect(lambda checked, indx=index: self.change_contact(indx)) #uses pass by value to set up button to connect to right contact
                 instance.setMinimumSize(QSize(0, 91))
                 instance.setStyleSheet(u'''
-                QPushButton::checked{
-                    background-color: #ffd2cf;
+                QPushButton:checked{
+                    
+                    background-color:#4693F5;
+                    color: #ffffff;
+                    border: 1px solid #ffffff;
+                    border-radius:8px;
                 }
-                QPushButton{ 
+                QPushButton:hover{
+                    
+                    background-color:#4693F5;
+                    color: #ffffff;
+                    border: 1px solid #ffffff;
+                    border-radius:8px;
+                
+                     
+                }
+                QPushButton{
+                    background-color:#ffffff;
+                    color: #000000;
+                    border: 1px solid #ffffff; 
+                    border-radius:8px;
+               
+                            
                 }''')
                 instance.setCheckable(True)
                 instance.setChecked(False)
@@ -197,6 +221,7 @@ class main_window(QMainWindow):
             self.ui.current_contact.setText('no contacts to see here')
         else:    
             self.ui.current_contact.setText(self.contacts[self.current_contact_index][0])
+           #self.ui.current_contact.setPixmap(QPixmap(':/user.png').scaled(24,24))
 
             conversation_pull = self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1]) 
             if conversation_pull != self.current_contact_messages:
@@ -213,20 +238,32 @@ class main_window(QMainWindow):
                 else:
                     for index in enumerate(self.current_contact_messages):
                         print(index)
-                        instance = QLineEdit(str(index[1][0]))
-                        instance.setMinimumSize(QSize(0, 91))
+                        instance = QLabel(str(index[1][0]))
+                        #instance.setMinimumSize(QSize(0, 91))
+                        instance.setMinimumWidth(0)
+                        instance.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+                        #instance.setReadOnly(True)
+                        instance.setWordWrap(True)
                         print(index[1][1])
                         if index[1][1] == 'received':
                             instance.setStyleSheet(u'''
-                            background-color:#FFFFFF;
+                            background-color:#e9e9eb;
+                            color: #000000;
+                            border: 1px solid #ffffff; 
+                            border-radius:8px;
+                            padding:4px 8px;
                             ''')
+                            self.main_pane_vertical.addWidget(instance,alignment=Qt.AlignmentFlag.AlignLeft)
                         else:
                             instance.setStyleSheet(u'''
                             background-color:#4693F5;
+                            color: #ffffff;
+                            border: 1px solid #ffffff; 
+                            border-radius:8px;
+                            padding:4px 8px;
                             ''')
-                        instance.setReadOnly(True)
-                        self.main_pane_vertical.addWidget(instance)
-                self.contact_pane_vertical.addStretch()
+                            self.main_pane_vertical.addWidget(instance,alignment=Qt.AlignmentFlag.AlignRight)
+                self.main_pane_vertical.addStretch()
                 self.main_pane_scrollwidget.setLayout(self.main_pane_vertical)
                 self.main_pane_scroller.setWidget(self.main_pane_scrollwidget)
 
@@ -246,7 +283,6 @@ class main_window(QMainWindow):
       
 def mainscreen(db,username,password) -> None:
     runtime = QApplication(sys.argv)
-    runtime.setStyle("Fusion")
     runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
     screen = main_window(db,username)
     screen.show()

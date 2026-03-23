@@ -17,8 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QMainWindow, QMenuBar, QPushButton, QScrollArea,
-    QSizePolicy, QSpacerItem, QStatusBar, QTextEdit,
-    QWidget)
+    QSizePolicy, QStatusBar, QTextEdit, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -49,6 +48,7 @@ class Ui_MainWindow(object):
         self.send_button = QPushButton(self.horizontalLayoutWidget)
         self.send_button.setObjectName(u"send_button")
         self.send_button.setMaximumSize(QSize(90, 90))
+        self.send_button.setStyleSheet(u"")
 
         self.send_bar.addWidget(self.send_button)
 
@@ -64,17 +64,13 @@ class Ui_MainWindow(object):
 
         self.contact_bar.addWidget(self.add_contact_button)
 
-        self.horizontalSpacer = QSpacerItem(160, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
-
-        self.contact_bar.addItem(self.horizontalSpacer)
-
         self.current_contact = QLabel(self.horizontalLayoutWidget_2)
         self.current_contact.setObjectName(u"current_contact")
         font1 = QFont()
         font1.setPointSize(16)
         self.current_contact.setFont(font1)
 
-        self.contact_bar.addWidget(self.current_contact)
+        self.contact_bar.addWidget(self.current_contact, 0, Qt.AlignHCenter)
 
         self.exit_button = QPushButton(self.horizontalLayoutWidget_2)
         self.exit_button.setObjectName(u"exit_button")
@@ -101,7 +97,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1522, 33))
+        self.menubar.setGeometry(QRect(0, 0, 1522, 39))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
