@@ -6,22 +6,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1522</width>
-    <height>1020</height>
+    <width>1474</width>
+    <height>995</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>1481</width>
-      <height>951</height>
+      <x>-10</x>
+      <y>-10</y>
+      <width>1471</width>
+      <height>961</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
@@ -125,6 +131,9 @@
        <height>731</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
@@ -145,7 +154,7 @@
        <x>20</x>
        <y>110</y>
        <width>361</width>
-       <height>821</height>
+       <height>841</height>
       </rect>
      </property>
      <property name="widgetResizable">
@@ -157,7 +166,7 @@
         <x>0</x>
         <y>0</y>
         <width>359</width>
-        <height>819</height>
+        <height>839</height>
        </rect>
       </property>
      </widget>
@@ -169,8 +178,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1522</width>
-     <height>39</height>
+     <width>1474</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
