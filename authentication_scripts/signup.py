@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
 from PySide6.QtCore import Qt
-from ui_files.authentication.signup_screen import Ui_MainWindow
-from main_window_scripts.encryption import hasher
+from ui_files import signupscreen_ui
+from main_window_scripts.encryption import hash_function
 import sys, uuid
 
 class signup_window(QMainWindow):
@@ -10,7 +10,7 @@ class signup_window(QMainWindow):
         
         #screen setup
         super(signup_window,self).__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = signupscreen_ui()
         self.ui.setupUi(self)
         self.ui.submit_form.clicked.connect(self.signupcheck)
         self.database = db
@@ -45,7 +45,7 @@ class signup_window(QMainWindow):
             self.ui.errorlabel.setText('username already in use')
         else:
             print('success')
-            self.hashed_password = hasher(self.password)
+            self.hashed_password = hash_function(self.password)
             userID = str(uuid.uuid1())
             self.database.signup_user_entry(userID,self.username,self.hashed_password)
             self.output = True

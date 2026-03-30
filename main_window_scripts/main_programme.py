@@ -1,54 +1,16 @@
 from PySide6.QtWidgets import QMainWindow,QApplication, QPushButton, QVBoxLayout, QLabel, QSpacerItem, QSizePolicy, QMessageBox,QWidget, QLineEdit
 from PySide6.QtCore import QSize, Qt, QRect, Signal,QObject, QThread, QThreadPool, Slot
 from PySide6.QtGui import QIcon, QPixmap
-from ui_files.main_window.main_screen import Ui_MainWindow
-from main_window_scripts.contact import add_contact_screen
-from main_window_scripts.encryption import encrypt
-from network import send_message
-import sys,socket,time
-import icons 
-
-
-class message_receiver(QObject):
-    error = Signal(object)
-
-    newmessage = Signal(str)
-    def __init__(self):
-        super().__init__()
-        
-    
-    def wifi_message_check(self)-> None:
-            self.wifi_connection = socket.socket()
-            port = 12345
-            self.wifi_connection.bind(('', port))
-            print ("socket binded to %s" %(port))
-            self.wifi_connection.listen(5)    
-            print ("socket is listening")
-            try:
-                while True:
-                    # Establish connection with client.
-                    c, addr = self.wifi_connection.accept()
-                    print(c,addr)
-                    #print ('Got connection from', addr )
-                    received_text =c.recv(1024).decode('utf-8')
-                    
-                    #print(f'{addr}: {received_text[2:-1]}')
-                    self.newmessage.emit(received_text)
-      
-            except Exception as e:
-                self.error.emit(e)
-           
-    
-    def receiver_close(self)-> None:
-        self.wifi_connection.close()    
-
-
+from ui_files import mainscreen_ui
+from main_window_scripts import add_contact_screen,encrypt
+from core_scripts import send_message ,message_receiver
+import sys,time
 
 class main_window(QMainWindow):
     
     def __init__(self,db,username) -> None:
         super(main_window,self).__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = mainscreen_ui()
         self.ui.setupUi(self) #imports ui
 
         #button connections
@@ -154,7 +116,7 @@ class main_window(QMainWindow):
         
     def exit_programme(self) -> None:
          self.stop_receiver()
-         time.sleep(1)
+         time.sleep(0.2)
          exit()
            
            
@@ -176,7 +138,7 @@ class main_window(QMainWindow):
                 self.contact_buttons_dict.clear() #clears dict
                 
             for index in range (len(self.contacts)): #iterates through the contact list
-                instance = QPushButton(self.contacts[index][0])
+                instance = QPushButton(self.contacts[index][0].capitalize())
                 #instance.setIcon(QIcon(':/user.png'))
 
                 instance.clicked.connect(lambda checked, indx=index: self.change_contact(indx)) #uses pass by value to set up button to connect to right contact
@@ -191,8 +153,8 @@ class main_window(QMainWindow):
                 }
                 QPushButton:hover{
                     
-                    background-color:#4693F5;
-                    color: #ffffff;
+                    background-color:#e9e9eb;
+                    color: #0;
                     border: 1px solid #ffffff;
                     border-radius:8px;
                 
@@ -218,9 +180,9 @@ class main_window(QMainWindow):
     def main_pane_update(self) -> None:
         
         if not self.contacts:
-            self.ui.current_contact.setText('no contacts to see here')
+            self.ui.current_contact.setText('No contacts to see here.')
         else:    
-            self.ui.current_contact.setText(self.contacts[self.current_contact_index][0])
+            self.ui.current_contact.setText(str(self.contacts[self.current_contact_index][0]).capitalize())
            #self.ui.current_contact.setPixmap(QPixmap(':/user.png').scaled(24,24))
 
             conversation_pull = self.database.get_conversations(self.userID,self.contacts[self.current_contact_index][1]) 
@@ -275,6 +237,7 @@ class main_window(QMainWindow):
             self.contact_buttons_dict[self.current_contact_index].setChecked(True)
         else:
             self.contact_buttons_dict[self.current_contact_index].setChecked(False)
+            
             self.current_contact_index = index
             self.current_contact_ID = self.contacts[self.current_contact_index][1]
             self.main_pane_update()

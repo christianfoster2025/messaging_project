@@ -1,11 +1,12 @@
 from authentication_scripts.login import login_screen 
 from authentication_scripts.signup import signup_screen
 from authentication_scripts.start import start_screen
+from main_window_scripts.main_programme import mainscreen
+from core_scripts.database import databaseinterfacer
 
-
-def setup(db) -> tuple: 
+def programme_setup() -> tuple: 
     #checking db exists
-    
+    db = databaseinterfacer()
     login:bool = False
     while login == False: #authentication loop
         choice = start_screen() #can return login or signup
@@ -24,7 +25,8 @@ def setup(db) -> tuple:
                     login = False #can now loop back round to sign in properly
                 else:
                     exit() #5 tries exceeded inside function programme now ends    
-    return username,password
+    mainscreen(db,username,password)
+    db.close()
 
         
         
