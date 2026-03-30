@@ -7,7 +7,6 @@ from database import databaseinterfacer
 def main() -> None: #main programme runtime, this is the script that will actually be ran
     username:str = ''
     password:str = ''
-    userID:str = ''
     db = databaseinterfacer()
     username,password = setup(db)
     mainscreen(db,username,password)

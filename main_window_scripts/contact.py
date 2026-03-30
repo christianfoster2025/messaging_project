@@ -4,6 +4,7 @@ from ui_files.main_window.contact_dialogue import Ui_Dialog
 import sys
 from main_window_scripts.encryption import zerocheck
 from getmac import get_mac_address
+from socket import gethostname,gethostbyname
 
 class contact_dialogue(QDialog): 
     
@@ -16,7 +17,8 @@ class contact_dialogue(QDialog):
         
         #variable init
         self.user_userID = db.current_userID(username)
-        self.user_wifi_mac = get_mac_address()
+        localipv4 = gethostbyname(gethostname())
+        self.user_wifi_mac = get_mac_address(ip = localipv4)
         self.user_bluetooth_mac = None
         self.user_public_key = None
         self.attempts = 0
