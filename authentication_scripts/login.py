@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
 from PySide6.QtCore import Qt
-from ui_files.authentication.login_screen import Ui_MainWindow
-from main_window_scripts.encryption import hasher
+from ui_files import loginscreen_ui
+from main_window_scripts import hash_function
 import sys
 
 class login_window(QMainWindow):
@@ -9,7 +9,7 @@ class login_window(QMainWindow):
     def __init__(self,db):
         #ui init
         super(login_window,self).__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = loginscreen_ui()
         self.ui.setupUi(self) #imports ui
         
         #button connect
@@ -29,7 +29,7 @@ class login_window(QMainWindow):
         end_of_check = False #either 5 times exceeded or success
         self.username = self.ui.username_entry.text()
         self.password = self.ui.password_entry.text() #getting text from Qlineedits
-        self.hashed_password = hasher(self.password)
+        self.hashed_password = hash_function(self.password)
         if len(self.username.strip()) ==0 or len(self.password.strip()) == 0: #checks that they arent empty or just have empty space in
             self.ui.errorlabel.setText('missing field try again')
             self.fail_count +=1
@@ -47,12 +47,6 @@ class login_window(QMainWindow):
         if end_of_check:
             self.close()
         
-        
-        
-        #print(self.ui.username_entry.text(),self.ui.password_entry.text())
-        #print(self.database.loginquery(self.username,self.password))
-                
-            
     
 def login_screen(db):
     runtime = QApplication(sys.argv)
@@ -64,4 +58,4 @@ def login_screen(db):
     return screen.output
     
 if __name__ == '__main__':
-    login_screen()
+    pass

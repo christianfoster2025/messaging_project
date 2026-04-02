@@ -1,7 +1,7 @@
 import hashlib
 
 
-def hasher(password:str) -> str:
+def hash_function(password:str) -> str:
     password = password.encode('ascii')
     output = hashlib.sha256(password)
     output = output.hexdigest()

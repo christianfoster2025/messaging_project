@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayoutWidget = QWidget(self.frame)
         self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
-        self.horizontalLayoutWidget.setGeometry(QRect(390, 860, 1081, 91))
+        self.horizontalLayoutWidget.setGeometry(QRect(390, 860, 1081, 92))
         self.send_bar = QHBoxLayout(self.horizontalLayoutWidget)
         self.send_bar.setObjectName(u"send_bar")
         self.send_bar.setContentsMargins(0, 0, 0, 0)
@@ -47,8 +47,12 @@ class Ui_MainWindow(object):
 
         self.send_button = QPushButton(self.horizontalLayoutWidget)
         self.send_button.setObjectName(u"send_button")
-        self.send_button.setMaximumSize(QSize(90, 90))
-        self.send_button.setStyleSheet(u"")
+        self.send_button.setMinimumSize(QSize(80, 80))
+        self.send_button.setMaximumSize(QSize(80, 80))
+        self.send_button.setStyleSheet(u"border-radius:40px;\n"
+"color: white;\n"
+"border: 1px solid #4693F5;\n"
+"background-color: #4693F5")
 
         self.send_bar.addWidget(self.send_button)
 
@@ -97,7 +101,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1522, 39))
+        self.menubar.setGeometry(QRect(0, 0, 1530, 58))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -110,7 +114,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.send_button.setText(QCoreApplication.translate("MainWindow", u"Send", None))
+        self.send_button.setText("")
         self.add_contact_button.setText(QCoreApplication.translate("MainWindow", u"add new contact", None))
         self.current_contact.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.exit_button.setText(QCoreApplication.translate("MainWindow", u"exit", None))

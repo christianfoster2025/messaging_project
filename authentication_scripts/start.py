@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
-from ui_files.authentication.start_screen import Ui_MainWindow
+from ui_files import startscreen_ui
 from PySide6.QtCore import Qt
 import sys
 
@@ -7,7 +7,7 @@ class start_window(QMainWindow):
     
     def __init__(self):
         super(start_window,self).__init__() #inherits the parent class
-        self.ui = Ui_MainWindow() #imports ui from the app
+        self.ui = startscreen_ui() #imports ui from the app
         self.ui.setupUi(self)
         self.ui.choice_login.clicked.connect(lambda: self.choice('login')) # attaches buttons to choice function with the right mode
         self.ui.choice_signup.clicked.connect(lambda: self.choice('signup'))

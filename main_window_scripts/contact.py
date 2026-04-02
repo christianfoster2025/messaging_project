@@ -1,22 +1,23 @@
 from PySide6.QtWidgets import QMainWindow,QApplication, QDialog
 from PySide6.QtCore import Qt
-from ui_files.main_window.contact_dialogue import Ui_Dialog
-import sys
-from main_window_scripts.encryption import zerocheck
+from ui_files import contactbox_ui
+from .encryption import zerocheck
 from getmac import get_mac_address
+from socket import gethostname,gethostbyname
 
 class contact_dialogue(QDialog): 
     
     def __init__(self,db,username):
         #UI import
         super(contact_dialogue,self).__init__() #inherits the parent class
-        self.ui = Ui_Dialog() #imports ui from the app
+        self.ui = contactbox_ui() #imports ui from the app
         self.ui.setupUi(self)
         self.database = db
         
         #variable init
         self.user_userID = db.current_userID(username)
-        self.user_wifi_mac = get_mac_address()
+        localipv4 = gethostbyname(gethostname())
+        self.user_wifi_mac = get_mac_address(ip = localipv4)
         self.user_bluetooth_mac = None
         self.user_public_key = None
         self.attempts = 0

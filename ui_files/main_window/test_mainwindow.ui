@@ -41,7 +41,7 @@
        <x>390</x>
        <y>860</y>
        <width>1081</width>
-       <height>91</height>
+       <height>92</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="send_bar">
@@ -56,17 +56,26 @@
       </item>
       <item>
        <widget class="QPushButton" name="send_button">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>80</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
-          <height>90</height>
+          <width>80</width>
+          <height>80</height>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true"/>
+         <string notr="true">border-radius:40px;
+color: white;
+border: 1px solid #4693F5;
+background-color: #4693F5</string>
         </property>
         <property name="text">
-         <string>Send</string>
+         <string/>
         </property>
        </widget>
       </item>
