@@ -21,4 +21,4 @@ def encrypt(text:str) -> str:
     return encrypted_text 
 
 if __name__ == '__main__':
-    hasher(input())
+    hash_function(input())
