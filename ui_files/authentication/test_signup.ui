@@ -45,7 +45,7 @@ background-color:white;</string>
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Pick a Username:</string>
+        <string>Pick a username:</string>
        </property>
       </widget>
      </item>
@@ -79,7 +79,7 @@ background-color:white;</string>
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Confirm Your Password:</string>
+        <string>Confirm your password:</string>
        </property>
       </widget>
      </item>

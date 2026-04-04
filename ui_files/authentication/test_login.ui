@@ -40,7 +40,7 @@ background-color:white;
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Enter Your Username:</string>
+        <string>Enter your username:</string>
        </property>
       </widget>
      </item>
@@ -57,7 +57,7 @@ background-color:white;
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Enter your Password:</string>
+        <string>Enter your password:</string>
        </property>
       </widget>
      </item>
@@ -103,7 +103,7 @@ border-radius:8px;
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="submit_form_2">
+      <widget class="QPushButton" name="reset_password">
        <property name="minimumSize">
         <size>
          <width>0</width>
