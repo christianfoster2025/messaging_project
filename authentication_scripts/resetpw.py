@@ -1,15 +1,15 @@
-from PySide6.QtWidgets import QMainWindow,QApplication
+from PySide6.QtWidgets import QMainWindow,QApplication,QDialog
 from PySide6.QtCore import Qt
 from ui_files import resetpw_screen_ui
 from main_window_scripts.encryption import hash_function
 import sys
 
-class resetpw_window(QMainWindow):
+class resetpw_window(QDialog):
     
-    def __init__(self,db):
+    def __init__(self,db,parent = None):
         
         #screen setup
-        super(resetpw_screen_ui,self).__init__()
+        super().__init__(parent)
         self.ui = resetpw_screen_ui()
         self.ui.setupUi(self)
         self.ui.submit_form.clicked.connect(self.signupcheck)
@@ -64,9 +64,9 @@ class resetpw_window(QMainWindow):
             
     
 def resetpw_screen(db):
-    runtime = QApplication(sys.argv)
-    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
-    screen = resetpw_screen(db)
+    runtime = QDialog()
+    #runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
+    screen = resetpw_window(db)
     screen.show()
     runtime.exec()
     runtime.shutdown()

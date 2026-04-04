@@ -79,23 +79,23 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.submit_form)
 
-        self.submit_form_2 = QPushButton(self.verticalLayoutWidget)
-        self.submit_form_2.setObjectName(u"submit_form_2")
-        self.submit_form_2.setMinimumSize(QSize(0, 30))
+        self.reset_password = QPushButton(self.verticalLayoutWidget)
+        self.reset_password.setObjectName(u"reset_password")
+        self.reset_password.setMinimumSize(QSize(0, 30))
         font = QFont()
         font.setFamilies([u"Franklin Gothic Book"])
         font.setPointSize(12)
         font.setBold(False)
         font.setItalic(False)
-        self.submit_form_2.setFont(font)
-        self.submit_form_2.setStyleSheet(u"background-color: #4693F5;\n"
+        self.reset_password.setFont(font)
+        self.reset_password.setStyleSheet(u"background-color: #4693F5;\n"
 "color:white;\n"
 "border: 1px solid #ffffff;\n"
 "border-radius:8px;\n"
 "\n"
 "")
 
-        self.verticalLayout.addWidget(self.submit_form_2)
+        self.verticalLayout.addWidget(self.reset_password)
 
         Messaging_App.setCentralWidget(self.centralwidget)
 
@@ -107,13 +107,13 @@ class Ui_MainWindow(object):
     def retranslateUi(self, Messaging_App):
         Messaging_App.setWindowTitle(QCoreApplication.translate("Messaging_App", u"MainWindow", None))
         self.label.setText(QCoreApplication.translate("Messaging_App", u"Log in:", None))
-        self.label_2.setText(QCoreApplication.translate("Messaging_App", u"Enter Your Username:", None))
+        self.label_2.setText(QCoreApplication.translate("Messaging_App", u"Enter your username:", None))
         self.username_entry.setText("")
         self.username_entry.setPlaceholderText(QCoreApplication.translate("Messaging_App", u"Username", None))
-        self.label_3.setText(QCoreApplication.translate("Messaging_App", u"Enter your Password:", None))
+        self.label_3.setText(QCoreApplication.translate("Messaging_App", u"Enter your password:", None))
         self.password_entry.setPlaceholderText(QCoreApplication.translate("Messaging_App", u"Password", None))
         self.errorlabel.setText("")
         self.submit_form.setText(QCoreApplication.translate("Messaging_App", u"Log in", None))
-        self.submit_form_2.setText(QCoreApplication.translate("Messaging_App", u"Forgot Password", None))
+        self.reset_password.setText(QCoreApplication.translate("Messaging_App", u"Forgot Password", None))
     # retranslateUi
 

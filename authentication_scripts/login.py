@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
 from PySide6.QtCore import Qt
 from ui_files import loginscreen_ui
+from authentication_scripts.resetpw import resetpw_screen
 from main_window_scripts import hash_function
 import sys
 
@@ -14,7 +15,7 @@ class login_window(QMainWindow):
         
         #button connect
         self.ui.submit_form.clicked.connect(self.logincheck) #connects button
-        self.ui.
+        self.ui.reset_password.clicked.connect(self.forgotpassword)
         
         #variables
         self.database = db #db link
@@ -24,7 +25,9 @@ class login_window(QMainWindow):
         self.password = '' 
         self.output = []
         
-        
+    def forgotpassword(self):
+        resetpw_screen(self.database)
+        self.close()
         
     def logincheck(self):
         end_of_check = False #either 5 times exceeded or success
