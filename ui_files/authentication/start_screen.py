@@ -16,7 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
-    QSizePolicy, QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -29,19 +29,26 @@ class Ui_MainWindow(object):
 "")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayoutWidget = QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(90, 70, 236, 221))
-        self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.label_2 = QLabel(self.verticalLayoutWidget)
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+
+        self.verticalLayout.addItem(self.verticalSpacer_3)
+
+        self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setMaximumSize(QSize(16777215, 50))
+        self.label_2.setAlignment(Qt.AlignBottom|Qt.AlignHCenter)
 
         self.verticalLayout.addWidget(self.label_2)
 
-        self.choice_login = QPushButton(self.verticalLayoutWidget)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.choice_login = QPushButton(self.centralwidget)
         self.choice_login.setObjectName(u"choice_login")
         self.choice_login.setMinimumSize(QSize(0, 30))
         self.choice_login.setStyleSheet(u"background-color: #4693F5;\n"
@@ -53,7 +60,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.choice_login)
 
-        self.label = QLabel(self.verticalLayoutWidget)
+        self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         self.label.setMaximumSize(QSize(16777215, 30))
         self.label.setLayoutDirection(Qt.LeftToRight)
@@ -61,7 +68,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label)
 
-        self.choice_signup = QPushButton(self.verticalLayoutWidget)
+        self.choice_signup = QPushButton(self.centralwidget)
         self.choice_signup.setObjectName(u"choice_signup")
         self.choice_signup.setMinimumSize(QSize(0, 30))
         self.choice_signup.setStyleSheet(u"background-color: #4693F5;\n"
@@ -72,6 +79,13 @@ class Ui_MainWindow(object):
 "")
 
         self.verticalLayout.addWidget(self.choice_signup)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+
+        self.verticalLayout.addItem(self.verticalSpacer_2)
+
+
+        self.verticalLayout_2.addLayout(self.verticalLayout)
 
         MainWindow.setCentralWidget(self.centralwidget)
 

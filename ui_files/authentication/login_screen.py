@@ -16,7 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, Messaging_App):
@@ -29,45 +30,43 @@ class Ui_MainWindow(object):
 "")
         self.centralwidget = QWidget(Messaging_App)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayoutWidget = QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(100, 60, 211, 261))
-        self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.label = QLabel(self.verticalLayoutWidget)
+        self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
 
         self.verticalLayout.addWidget(self.label)
 
-        self.label_2 = QLabel(self.verticalLayoutWidget)
+        self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
 
         self.verticalLayout.addWidget(self.label_2)
 
-        self.username_entry = QLineEdit(self.verticalLayoutWidget)
+        self.username_entry = QLineEdit(self.centralwidget)
         self.username_entry.setObjectName(u"username_entry")
 
         self.verticalLayout.addWidget(self.username_entry)
 
-        self.label_3 = QLabel(self.verticalLayoutWidget)
+        self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
 
         self.verticalLayout.addWidget(self.label_3)
 
-        self.password_entry = QLineEdit(self.verticalLayoutWidget)
+        self.password_entry = QLineEdit(self.centralwidget)
         self.password_entry.setObjectName(u"password_entry")
         self.password_entry.setEchoMode(QLineEdit.Password)
 
         self.verticalLayout.addWidget(self.password_entry)
 
-        self.errorlabel = QLabel(self.verticalLayoutWidget)
+        self.errorlabel = QLabel(self.centralwidget)
         self.errorlabel.setObjectName(u"errorlabel")
         self.errorlabel.setStyleSheet(u"color:rgb(255, 0, 0)")
 
         self.verticalLayout.addWidget(self.errorlabel)
 
-        self.submit_form = QPushButton(self.verticalLayoutWidget)
+        self.submit_form = QPushButton(self.centralwidget)
         self.submit_form.setObjectName(u"submit_form")
         self.submit_form.setMinimumSize(QSize(0, 30))
         self.submit_form.setStyleSheet(u"background-color: #4693F5;\n"
@@ -79,7 +78,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.submit_form)
 
-        self.reset_password = QPushButton(self.verticalLayoutWidget)
+        self.verticalSpacer = QSpacerItem(20, 8, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.reset_password = QPushButton(self.centralwidget)
         self.reset_password.setObjectName(u"reset_password")
         self.reset_password.setMinimumSize(QSize(0, 30))
         font = QFont()
@@ -96,6 +99,9 @@ class Ui_MainWindow(object):
 "")
 
         self.verticalLayout.addWidget(self.reset_password)
+
+
+        self.verticalLayout_2.addLayout(self.verticalLayout)
 
         Messaging_App.setCentralWidget(self.centralwidget)
 

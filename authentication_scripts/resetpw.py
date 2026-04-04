@@ -6,13 +6,13 @@ import sys
 
 class resetpw_window(QDialog):
     
-    def __init__(self,db,parent = None):
+    def __init__(self,db):
         
         #screen setup
-        super().__init__(parent)
+        super().__init__()
         self.ui = resetpw_screen_ui()
         self.ui.setupUi(self)
-        self.ui.submit_form.clicked.connect(self.signupcheck)
+        self.ui.submit_form.clicked.connect(self.resetcheck)
         self.database = db
         
         #variable setup
@@ -25,7 +25,7 @@ class resetpw_window(QDialog):
         self.output:bool = False
         
         
-    def signupcheck(self):
+    def resetcheck(self):
         self.username = self.ui.username_entry.text()
         self.password = self.ui.password_entry.text()
         self.confirmpassword = self.ui.confirm_password.text()
@@ -40,15 +40,15 @@ class resetpw_window(QDialog):
             fail = True
             self.ui.errorlabel.setText('passwords don\'t match')
             
-        elif not(self.database.signup_user_query(str(self.username))):
+        elif not(self.database.user_exist_query(str(self.username))):
             fail = True
             self.ui.errorlabel.setText('username not found')
         else:
             print('success')
             self.hashed_password = hash_function(self.password)
-            userID = None
+
             
-            if self.database.reset_password(userID,self.username,self.hashed_password):
+            if self.database.reset_password(self.username,self.hashed_password):
                 self.output = True
                 self.close()
             else:
@@ -64,12 +64,10 @@ class resetpw_window(QDialog):
             
     
 def resetpw_screen(db):
-    runtime = QDialog()
     #runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
     screen = resetpw_window(db)
     screen.show()
-    runtime.exec()
-    runtime.shutdown()
+    screen.exec()
     return screen.output
 
 

@@ -15,8 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
+    QMainWindow, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -28,13 +29,11 @@ class Ui_MainWindow(object):
 "background-color:white;")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayoutWidget = QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(100, 60, 211, 271))
-        self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
+        self.horizontalLayout = QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.label = QLabel(self.verticalLayoutWidget)
+        self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         font = QFont()
         font.setFamilies([u"Franklin Gothic Book"])
@@ -43,45 +42,45 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.label)
 
-        self.label_2 = QLabel(self.verticalLayoutWidget)
+        self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
 
         self.verticalLayout.addWidget(self.label_2)
 
-        self.username_entry = QLineEdit(self.verticalLayoutWidget)
+        self.username_entry = QLineEdit(self.centralwidget)
         self.username_entry.setObjectName(u"username_entry")
 
         self.verticalLayout.addWidget(self.username_entry)
 
-        self.label_3 = QLabel(self.verticalLayoutWidget)
+        self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
 
         self.verticalLayout.addWidget(self.label_3)
 
-        self.password_entry = QLineEdit(self.verticalLayoutWidget)
+        self.password_entry = QLineEdit(self.centralwidget)
         self.password_entry.setObjectName(u"password_entry")
         self.password_entry.setEchoMode(QLineEdit.Password)
 
         self.verticalLayout.addWidget(self.password_entry)
 
-        self.label_4 = QLabel(self.verticalLayoutWidget)
+        self.label_4 = QLabel(self.centralwidget)
         self.label_4.setObjectName(u"label_4")
 
         self.verticalLayout.addWidget(self.label_4)
 
-        self.confirm_password = QLineEdit(self.verticalLayoutWidget)
+        self.confirm_password = QLineEdit(self.centralwidget)
         self.confirm_password.setObjectName(u"confirm_password")
         self.confirm_password.setEchoMode(QLineEdit.Password)
 
         self.verticalLayout.addWidget(self.confirm_password)
 
-        self.errorlabel = QLabel(self.verticalLayoutWidget)
+        self.errorlabel = QLabel(self.centralwidget)
         self.errorlabel.setObjectName(u"errorlabel")
         self.errorlabel.setStyleSheet(u"color:rgb(255, 0, 0)")
 
         self.verticalLayout.addWidget(self.errorlabel)
 
-        self.submit_form = QPushButton(self.verticalLayoutWidget)
+        self.submit_form = QPushButton(self.centralwidget)
         self.submit_form.setObjectName(u"submit_form")
         self.submit_form.setMinimumSize(QSize(0, 30))
         self.submit_form.setStyleSheet(u"background-color: #4693F5;\n"
@@ -91,6 +90,9 @@ class Ui_MainWindow(object):
 "")
 
         self.verticalLayout.addWidget(self.submit_form)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout)
 
         MainWindow.setCentralWidget(self.centralwidget)
 

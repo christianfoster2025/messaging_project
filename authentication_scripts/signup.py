@@ -40,7 +40,7 @@ class signup_window(QMainWindow):
             fail = True
             self.ui.errorlabel.setText('passwords don\'t match')
             
-        elif self.database.signup_user_query(str(self.username)):
+        elif self.database.user_exist_query(str(self.username)):
             fail = True
             self.ui.errorlabel.setText('username already in use')
         else:

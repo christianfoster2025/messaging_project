@@ -26,8 +26,10 @@ class login_window(QMainWindow):
         self.output = []
         
     def forgotpassword(self):
+        self.hide()
         resetpw_screen(self.database)
-        self.close()
+        self.show()
+        
         
     def logincheck(self):
         end_of_check = False #either 5 times exceeded or success

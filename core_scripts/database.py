@@ -34,7 +34,7 @@ class databaseinterfacer():
             print(f'login query error:{e}')
             return False
         
-    def signup_user_query(self,username:str) -> bool:
+    def user_exist_query(self,username:str) -> bool:
         try:
             self.interfacer.execute('SELECT * FROM users WHERE username LIKE ?',(username,))
             self.connector.commit()
@@ -45,7 +45,19 @@ class databaseinterfacer():
         except Exception as e:
             print(f'username query error:{e}')
             return True #if fails for any reason will return the result that requires it to be tried again
-           
+        
+    def reset_password(self,username:str, hashed_password:str) ->bool:
+        try:
+            userID = self.current_userID(username)
+            self.interfacer.execute('UPDATE users SET password = ? WHERE userID LIKE ?',(userID,hashed_password))
+            self.connector.commit()
+            print('success')
+            return True
+        except Exception as e:
+            print(f'signup user entry error:{e}')
+            return False
+        
+        
     def signup_user_entry(self,userID:str,username:str,hashed_password:str) -> bool:
         try:
             self.interfacer.execute('INSERT INTO users VALUES (?,?,?,?,?)',(userID,username,hashed_password,'test','test'))
