@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'test_signup.ui'
+## Form generated from reading UI file 'test_reset_pw.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.10.0
 ##
@@ -22,7 +22,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(412, 367)
+        MainWindow.resize(412, 368)
         MainWindow.setStyleSheet(u"\n"
 "font: 12pt \"Franklin Gothic Book\";\n"
 "background-color:white;")
@@ -101,13 +101,13 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Sign up:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Pick a Username:", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Reset Password:", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Enter your username:", None))
         self.username_entry.setText("")
         self.username_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Username", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Password:", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Create a new password:", None))
         self.password_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Password", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Confirm Your Password:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Confirm your new password:", None))
         self.confirm_password.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Confirm Password", None))
         self.errorlabel.setText("")
         self.submit_form.setText(QCoreApplication.translate("MainWindow", u"Sign up", None))
