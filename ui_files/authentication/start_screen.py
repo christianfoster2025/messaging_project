@@ -16,48 +16,62 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QSizePolicy, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(412, 367)
+        MainWindow.setStyleSheet(u"font: 12pt \"Franklin Gothic Book\";\n"
+"background-color:white;\n"
+"\n"
+"")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayoutWidget = QWidget(self.centralwidget)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(100, 60, 211, 251))
+        self.verticalLayoutWidget.setGeometry(QRect(90, 70, 236, 221))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout.addItem(self.verticalSpacer_2)
-
         self.label_2 = QLabel(self.verticalLayoutWidget)
         self.label_2.setObjectName(u"label_2")
+        self.label_2.setMaximumSize(QSize(16777215, 50))
 
         self.verticalLayout.addWidget(self.label_2)
 
         self.choice_login = QPushButton(self.verticalLayoutWidget)
         self.choice_login.setObjectName(u"choice_login")
+        self.choice_login.setMinimumSize(QSize(0, 30))
+        self.choice_login.setStyleSheet(u"background-color: #4693F5;\n"
+"color:white;\n"
+"border: 1px solid #ffffff;\n"
+"border-radius:8px;\n"
+"\n"
+"")
 
         self.verticalLayout.addWidget(self.choice_login)
 
         self.label = QLabel(self.verticalLayoutWidget)
         self.label.setObjectName(u"label")
+        self.label.setMaximumSize(QSize(16777215, 30))
+        self.label.setLayoutDirection(Qt.LeftToRight)
+        self.label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout.addWidget(self.label)
 
         self.choice_signup = QPushButton(self.verticalLayoutWidget)
         self.choice_signup.setObjectName(u"choice_signup")
+        self.choice_signup.setMinimumSize(QSize(0, 30))
+        self.choice_signup.setStyleSheet(u"background-color: #4693F5;\n"
+"color:white;\n"
+"border: 1px solid #ffffff;\n"
+"border-radius:8px;\n"
+"\n"
+"")
 
         self.verticalLayout.addWidget(self.choice_signup)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout.addItem(self.verticalSpacer)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -68,9 +82,9 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"welcome", None))
-        self.choice_login.setText(QCoreApplication.translate("MainWindow", u"Login", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Welcome to the Messaging Project!", None))
+        self.choice_login.setText(QCoreApplication.translate("MainWindow", u"Log in", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Or", None))
-        self.choice_signup.setText(QCoreApplication.translate("MainWindow", u"SIgnup", None))
+        self.choice_signup.setText(QCoreApplication.translate("MainWindow", u"Sign up", None))
     # retranslateUi
 

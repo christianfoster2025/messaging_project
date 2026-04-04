@@ -14,6 +14,7 @@ class login_window(QMainWindow):
         
         #button connect
         self.ui.submit_form.clicked.connect(self.logincheck) #connects button
+        self.ui.
         
         #variables
         self.database = db #db link
