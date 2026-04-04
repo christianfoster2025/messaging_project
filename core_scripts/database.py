@@ -49,7 +49,7 @@ class databaseinterfacer():
     def reset_password(self,username:str, hashed_password:str) ->bool:
         try:
             userID = self.current_userID(username)
-            self.interfacer.execute('UPDATE users SET password = ? WHERE userID LIKE ?',(userID,hashed_password))
+            self.interfacer.execute('UPDATE users SET password = ? WHERE userID LIKE ?',(hashed_password,userID))
             self.connector.commit()
             print('success')
             return True

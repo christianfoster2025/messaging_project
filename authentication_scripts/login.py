@@ -24,7 +24,12 @@ class login_window(QMainWindow):
         self.username = ''
         self.password = '' 
         self.output = []
-        
+
+    def closeEvent(self, event):
+        self.output = []
+        return super().closeEvent(event)
+
+
     def forgotpassword(self):
         self.hide()
         resetpw_screen(self.database)
@@ -48,7 +53,7 @@ class login_window(QMainWindow):
             
         if self.fail_count >=5:
             end_of_check = True
-            self.output = [False]
+            self.output = ['fail']
             
         if end_of_check:
             self.close()

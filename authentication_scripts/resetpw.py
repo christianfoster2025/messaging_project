@@ -29,8 +29,6 @@ class resetpw_window(QDialog):
         self.username = self.ui.username_entry.text()
         self.password = self.ui.password_entry.text()
         self.confirmpassword = self.ui.confirm_password.text()
-        
-        
         fail = False
         #print(self.username, len(self.username.strip())==0 )
         if len(self.username.strip())==0 or len(self.password.strip())==0 or len(self.confirmpassword.strip())==0:
@@ -39,7 +37,6 @@ class resetpw_window(QDialog):
         elif self.password != self.confirmpassword:
             fail = True
             self.ui.errorlabel.setText('passwords don\'t match')
-            
         elif not(self.database.user_exist_query(str(self.username))):
             fail = True
             self.ui.errorlabel.setText('username not found')
@@ -47,7 +44,6 @@ class resetpw_window(QDialog):
             print('success')
             self.hashed_password = hash_function(self.password)
 
-            
             if self.database.reset_password(self.username,self.hashed_password):
                 self.output = True
                 self.close()
@@ -64,7 +60,6 @@ class resetpw_window(QDialog):
             
     
 def resetpw_screen(db):
-    #runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
     screen = resetpw_window(db)
     screen.show()
     screen.exec()

@@ -13,11 +13,11 @@ def programme_setup() -> tuple:
         match choice:
             case 'login':
                     login_output = login_screen(db)
-                    if login_output[0] == True:
+                    if login_output[0] == 'success':
                         login = True
                         credentials:tuple = login_output[1]
                         (username,password) = credentials
-                    else:
+                    elif login_output[0] == 'fail':
                         exit() #5 tries exceeded inside function programme now ends
             case 'signup':
                 signup_output = signup_screen(db)
