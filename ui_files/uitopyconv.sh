@@ -39,3 +39,11 @@
 } || {
     echo 'contact dialogue compilation failed'
 }
+
+{
+    pyside6-uic authentication/test_reset_pw.ui -o authentication/reset_pw_screen.py &&
+    echo "reset_pw screen compiled"
+
+} || {
+    echo 'reset_pw screen compilation failed'
+}

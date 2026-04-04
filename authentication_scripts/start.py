@@ -3,7 +3,7 @@ from ui_files import startscreen_ui
 from PySide6.QtCore import Qt
 import sys
 
-class start_window(QMainWindow): 
+class start_window(QMainWindow):  # screen that lets the user pick between login and signup
     
     def __init__(self):
         super(start_window,self).__init__() #inherits the parent class
@@ -15,14 +15,14 @@ class start_window(QMainWindow):
         
     def choice(self,option):
             self.chosen = option
-            self.close()
+            self.close() # as soon as a choice is picked the screen closes
                 
             
     
 def start_screen():
     runtime = QApplication(sys.argv)
   
-    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
+    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light) 
     screen = start_window()
     screen.show()
     runtime.exec() #initaties main loop

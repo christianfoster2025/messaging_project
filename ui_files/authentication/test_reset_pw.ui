@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>412</width>
-    <height>367</height>
+    <height>368</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,14 +38,14 @@ background-color:white;</string>
         </font>
        </property>
        <property name="text">
-        <string>Sign up:</string>
+        <string>Reset Password:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Pick a Username:</string>
+        <string>Enter your username:</string>
        </property>
       </widget>
      </item>
@@ -62,7 +62,7 @@ background-color:white;</string>
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Password:</string>
+        <string>Create a new password:</string>
        </property>
       </widget>
      </item>
@@ -79,7 +79,7 @@ background-color:white;</string>
      <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Confirm Your Password:</string>
+        <string>Confirm your new password:</string>
        </property>
       </widget>
      </item>

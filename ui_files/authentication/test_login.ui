@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Messaging_App</class>
+ <widget class="QMainWindow" name="Messaging_App">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">font: 12pt &quot;Franklin Gothic Book&quot;;
+background-color:white;
+
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
@@ -20,21 +26,21 @@
       <x>100</x>
       <y>60</y>
       <width>211</width>
-      <height>211</height>
+      <height>261</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>login page</string>
+        <string>Log in:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>username</string>
+        <string>Enter Your Username:</string>
        </property>
       </widget>
      </item>
@@ -51,7 +57,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>password</string>
+        <string>Enter your Password:</string>
        </property>
       </widget>
      </item>
@@ -77,8 +83,52 @@
      </item>
      <item>
       <widget class="QPushButton" name="submit_form">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #4693F5;
+color:white;
+border: 1px solid #ffffff;
+border-radius:8px;
+
+</string>
+       </property>
        <property name="text">
-        <string>login</string>
+        <string>Log in</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="submit_form_2">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Franklin Gothic Book</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #4693F5;
+color:white;
+border: 1px solid #ffffff;
+border-radius:8px;
+
+</string>
+       </property>
+       <property name="text">
+        <string>Forgot Password</string>
        </property>
       </widget>
      </item>

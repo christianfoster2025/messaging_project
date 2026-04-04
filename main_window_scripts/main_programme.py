@@ -92,7 +92,8 @@ class main_window(QMainWindow):
     def new_contact_button(self) -> None:
        add_contact_screen(self.database,self.username)
        self.update_contact_list()
-   
+       self.main_pane_update()
+       self.contact_buttons_dict[self.current_contact_index].setChecked(True)
   
    
    
@@ -154,7 +155,7 @@ class main_window(QMainWindow):
                 QPushButton:hover{
                     
                     background-color:#e9e9eb;
-                    color: #0;
+                    color: #000000;
                     border: 1px solid #ffffff;
                     border-radius:8px;
                 
