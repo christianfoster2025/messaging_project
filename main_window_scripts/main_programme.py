@@ -72,7 +72,6 @@ class main_window(QMainWindow):
    
     @Slot(str)    
     def process_incoming_message(self,content:str):
-        print(content)
         senderID,message = content.split(':')
         receiverID = self.userID
         state= 'received'
@@ -202,7 +201,6 @@ class main_window(QMainWindow):
                     self.main_pane_vertical.addWidget(instance)    
                 else:
                     for index in enumerate(self.current_contact_messages):
-                        print(index)
                         instance = QLabel(str(index[1][0])) #puts text in message
                         instance.setMinimumWidth(0)
                         instance.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed) 

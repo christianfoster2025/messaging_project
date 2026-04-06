@@ -7,45 +7,37 @@ import sys
 
 
 def main() -> None:
-    runtime = QApplication(sys.argv) #instantiatie the application runtime
+    runtime = QApplication(sys.argv) #instantiate the application runtime
     runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
-    
-    #checking db exists
-    db = databaseinterfacer()
-    
-    authenticated:bool = False
-    while True: #authentication loop
-        start = start_window()
+    db = databaseinterfacer() #instantiating the database
+    while True: #main programme loop
+        start = start_window() #instantiating start UI
         start.show()
         runtime.exec()
-        choice = start.chosen
-        match choice:
+        match start.chosen: #choice from whichever button was clicked on the start UI
             case 'login':
-                login = login_window(db)
+                login = login_window(db) #instantiates login UI
                 login.show()
                 runtime.exec()
                 if login.success:
-                    username,password = login.credentials
-                    
-                    main = main_window(db,username)
+                    username,password = login.credentials #gets credentials from login
+                    main = main_window(db,username) #instantiates main programme
                     main.show()
-                    main.start_receiver()
+                    main.start_receiver() #starts message receiver thread
                     runtime.exec()
-                    if main.end:
-                        break
+                    if main.end: 
+                        break #triggered if the X is clicked on the main screen
                     else:
-                        db.close()  
+                        db.close()  #triggered if the signout button is pressed reinstantiating database to clear cache for new login
                         db = ''
                         db = databaseinterfacer()
                     
             case 'signup':
-                signup = signup_window(db)
+                signup = signup_window(db) #instantiates the signup UI
                 signup.show()
                 runtime.exec()
         if start.endscript :
-            break       
-                  
-    #runtime.shutdown()
+            break       #closes programme if close clicked on start page
     db.close()              
 
 

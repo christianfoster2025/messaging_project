@@ -1,9 +1,7 @@
-from PySide6.QtWidgets import QMainWindow,QApplication
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QMainWindow,QApplication,QMessageBox
 from ui_files import loginscreen_ui
 from authentication_scripts.resetpw import resetpw_screen
 from main_window_scripts import hash_function
-import sys
 
 class login_window(QMainWindow):
     
@@ -50,6 +48,7 @@ class login_window(QMainWindow):
             self.success = True
             self.close()
         if self.fail_count >=5:
+            QMessageBox.warning(self,'Too many failed attempts.')
             self.close()
     
 if __name__ == '__main__':

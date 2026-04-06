@@ -1,7 +1,7 @@
-from PySide6.QtWidgets import QMainWindow,QApplication, QDialog
+from PySide6.QtWidgets import QDialog
 from PySide6.QtCore import Qt
 from ui_files import contactbox_ui
-from .encryption import zerocheck
+from main_window_scripts.encryption import zerocheck
 from getmac import get_mac_address
 from socket import gethostname,gethostbyname
 

@@ -1,6 +1,5 @@
 import os, re, socket
 from PySide6.QtCore import Signal,QObject
-from PySide6.QtWidgets import QMessageBox
 
 class message_receiver(QObject):
     error = Signal(object) #signals back to main thread

@@ -1,8 +1,7 @@
-from PySide6.QtWidgets import QMainWindow,QApplication
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QMainWindow,QApplication,QMessageBox
 from ui_files import signupscreen_ui
 from main_window_scripts.encryption import hash_function
-import sys, uuid
+import uuid
 
 class signup_window(QMainWindow):
     
@@ -50,6 +49,7 @@ class signup_window(QMainWindow):
             self.fail_count +=1
         
         if self.fail_count >=5:
+            QMessageBox.warning(self,'Too many failed attempts.')
             self.close()
 
     def closeEvent(self, event): #makes UI closes handle properly so runtime can be passed onto the next UI
