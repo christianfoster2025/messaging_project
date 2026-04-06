@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QMainWindow,QApplication
 from ui_files import startscreen_ui
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt,Signal
 import sys
 
 class start_window(QMainWindow):  # screen that lets the user pick between login and signup
-    
+
     def __init__(self):
         super(start_window,self).__init__() #inherits the parent class
         self.ui = startscreen_ui() #imports ui from the app
@@ -12,22 +12,17 @@ class start_window(QMainWindow):  # screen that lets the user pick between login
         self.ui.choice_login.clicked.connect(lambda: self.choice('login')) # attaches buttons to choice function with the right mode
         self.ui.choice_signup.clicked.connect(lambda: self.choice('signup'))
         self.chosen = ''
+        self.endscript:bool = True
         
     def choice(self,option):
+            self.endscript = False
             self.chosen = option
             self.close() # as soon as a choice is picked the screen closes
                 
-            
+    def closeEvent(self, event):
+        QApplication.instance().quit()
+        event.accept()      
     
-def start_screen():
-    runtime = QApplication(sys.argv)
-  
-    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light) 
-    screen = start_window()
-    screen.show()
-    runtime.exec() #initaties main loop
-    runtime.shutdown() # when mainloop is ended kills qapplication
-    return screen.chosen
-    
+
 if __name__ == '__main__':
-    start_screen()
+    pass

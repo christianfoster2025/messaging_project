@@ -16,64 +16,47 @@ class signup_window(QMainWindow):
         self.database = db
         
         #variable setup
-        self.hashed_password = '' 
-        self.confirm_hashed_password = ''
         self.fail_count =0 
-        self.username = ''
-        self.password = ''
-        self.confirmpassword = '' 
         self.output:bool = False
         
         
     def signupcheck(self):
-        self.username = self.ui.username_entry.text()
-        self.password = self.ui.password_entry.text()
-        self.confirmpassword = self.ui.confirm_password.text()
-        
+        username = self.ui.username_entry.text() #take in user entries
+        password = self.ui.password_entry.text()
+        confirmpassword = self.ui.confirm_password.text()
         
         fail = False
-        #print(self.username, len(self.username.strip())==0 )
-        if len(self.username.strip())==0 or len(self.password.strip())==0 or len(self.confirmpassword.strip())==0:
+       
+        if len(username.strip())==0 or len(password.strip())==0 or len(confirmpassword.strip())==0: #length/whitespace check
             fail = True
-            self.ui.errorlabel.setText('missing fields')
-        elif self.password != self.confirmpassword:
+            self.ui.errorlabel.setText('Missing fields')
+        elif password != confirmpassword: #checking passwords match
             fail = True
-            self.ui.errorlabel.setText('passwords don\'t match')
+            self.ui.errorlabel.setText('Passwords don\'t match')
             
-        elif self.database.user_exist_query(str(self.username)):
+        elif self.database.user_exist_query(username): #checking user doesn't already exist
             fail = True
-            self.ui.errorlabel.setText('username already in use')
+            self.ui.errorlabel.setText('This username is already in use')
         else:
-            print('success')
-            self.hashed_password = hash_function(self.password)
+            hashed_password = hash_function(password) 
             userID = str(uuid.uuid1())
-            self.database.signup_user_entry(userID,self.username,self.hashed_password)
-            self.output = True
-            self.close()
+            if self.database.signup_user_entry(userID,username,hashed_password): #putting user into db
+                self.output = True
+                self.close()
+            else:
+                self.ui.errorlabel.setText('Database entry failed, try again')
         
         if fail: 
             self.fail_count +=1
         
         if self.fail_count >=5:
             self.close()
-        
-        #print(''' username: {self.username}
-        #    passwordhash: {self.hashed_password}
-        #    confirm pashwordhash: {self.confirm_hashed_password}  ''')
+
+    def closeEvent(self, event): #makes UI closes handle properly so runtime can be passed onto the next UI
+        QApplication.instance().quit() 
+        event.accept()   
                 
-            
-    
-def signup_screen(db):
-    runtime = QApplication(sys.argv)
-    runtime.styleHints().setColorScheme(Qt.ColorScheme.Light)
-    screen = signup_window(db)
-    screen.show()
-    runtime.exec()
-    runtime.shutdown()
-    return screen.output
-
-
 if __name__ == '__main__':
-    signup_screen()
+    pass
 
 

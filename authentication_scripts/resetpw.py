@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMainWindow,QApplication,QDialog
+from PySide6.QtWidgets import QMainWindow,QApplication,QDialog, QMessageBox
 from PySide6.QtCore import Qt
 from ui_files import resetpw_screen_ui
 from main_window_scripts.encryption import hash_function
@@ -12,41 +12,32 @@ class resetpw_window(QDialog):
         super().__init__()
         self.ui = resetpw_screen_ui()
         self.ui.setupUi(self)
-        self.ui.submit_form.clicked.connect(self.resetcheck)
+        self.ui.submit_form.clicked.connect(self.resetcheck) #connects the button
         self.database = db
         
         #variable setup
-        self.hashed_password = '' 
         self.confirm_hashed_password = ''
         self.fail_count =0 
-        self.username = ''
-        self.password = ''
-        self.confirmpassword = '' 
-        self.output:bool = False
         
         
-    def resetcheck(self):
-        self.username = self.ui.username_entry.text()
-        self.password = self.ui.password_entry.text()
-        self.confirmpassword = self.ui.confirm_password.text()
+    def resetcheck(self): #linked to button
+        username = self.ui.username_entry.text() #takes in user entries
+        password = self.ui.password_entry.text()
+        confirmpassword = self.ui.confirm_password.text()
         fail = False
-        #print(self.username, len(self.username.strip())==0 )
-        if len(self.username.strip())==0 or len(self.password.strip())==0 or len(self.confirmpassword.strip())==0:
+        if len(username.strip())==0 or len(password.strip())==0 or len(confirmpassword.strip())==0: #length/whitespace check
             fail = True
             self.ui.errorlabel.setText('missing fields')
-        elif self.password != self.confirmpassword:
+        elif password != confirmpassword: #check passwords match
             fail = True
             self.ui.errorlabel.setText('passwords don\'t match')
-        elif not(self.database.user_exist_query(str(self.username))):
+        elif not(self.database.user_exist_query(str(username))): #checks theres an entry for that user in the database
             fail = True
             self.ui.errorlabel.setText('username not found')
         else:
-            print('success')
-            self.hashed_password = hash_function(self.password)
-
-            if self.database.reset_password(self.username,self.hashed_password):
-                self.output = True
-                self.close()
+            hashed_password = hash_function(password)
+            if self.database.reset_password(username,hashed_password): #tries to apply password
+                self.close() #successful end
             else:
                 fail = True
         
@@ -54,16 +45,16 @@ class resetpw_window(QDialog):
             self.fail_count +=1
         
         if self.fail_count >=5:
-            self.close()
+            QMessageBox.warning(self,'Too many failed attempts.')
+            self.close() #unsuccessful end
         
                 
             
     
 def resetpw_screen(db):
-    screen = resetpw_window(db)
-    screen.show()
-    screen.exec()
-    return screen.output
+    screen = resetpw_window(db) #call class
+    screen.show() #show window
+    screen.exec() #runtime loop
 
 
 if __name__ == '__main__':

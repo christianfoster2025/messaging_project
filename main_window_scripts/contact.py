@@ -24,11 +24,8 @@ class contact_dialogue(QDialog):
         
         #screen setup self contact info
         self.ui.contact_info.setPlainText(f'Wi-Fi Mac Address: {self.user_wifi_mac} \nBluetooth Mac Address: {self.user_bluetooth_mac} \nPublic Key: {self.user_public_key} \nUserID: {self.user_userID}')
-        self.ui.contact_info.setEnabled(True)    # Must be True to interact
-        self.ui.contact_info.setTextInteractionFlags(
-            Qt.TextInteractionFlag.TextSelectableByMouse | 
-            Qt.TextInteractionFlag.TextSelectableByKeyboard
-            )
+        self.ui.contact_info.setEnabled(True)    #allows interaction
+        self.ui.contact_info.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse | Qt.TextInteractionFlag.TextSelectableByKeyboard)
         
     def accept(self) -> None :
         #collect fields from UI
@@ -54,7 +51,7 @@ class contact_dialogue(QDialog):
         else: 
             print('testing accept')
             try:
-                self.database.contact_user_add(alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key)
+                self.database.contact_user_add(alias,wifi_mac,bluetooth_mac, contactid, current_userid,public_key) #attempts to add to the database
                 super().accept()
                 self.close()
             except:
@@ -69,7 +66,7 @@ class contact_dialogue(QDialog):
 def add_contact_screen(db,username):
     dialogue = contact_dialogue(db,username) #instantiation
     dialogue.show()
-    result= dialogue.exec() #runtime within main window
+    dialogue.exec() #runtime within main window
     dialogue.close()
    
     

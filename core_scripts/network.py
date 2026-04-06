@@ -1,37 +1,39 @@
 import os, re, socket
 from PySide6.QtCore import Signal,QObject
+from PySide6.QtWidgets import QMessageBox
 
 class message_receiver(QObject):
-    error = Signal(object)
+    error = Signal(object) #signals back to main thread
     newmessage = Signal(str)
     
     def __init__(self):
         super().__init__()
+        self.running = True
         
     
     def wifi_message_check(self)-> None:
-            self.wifi_connection = socket.socket()
+            self.wifi_connection = socket.socket() #receiver socket
             port = 12345
             self.wifi_connection.bind(('', port))
-            print ("socket binded to %s" %(port))
             self.wifi_connection.listen(5)    
-            print ("socket is listening")
+            
             try:
                 while True:
-                    # Establish connection with client.
-                    c, addr = self.wifi_connection.accept()
-                    print(c,addr)
-                    #print ('Got connection from', addr )
+                    c, addr = self.wifi_connection.accept() #when sender tries to connect automatically connects and receivers data
                     received_text =c.recv(1024).decode('utf-8')
                     
-                    #print(f'{addr}: {received_text[2:-1]}')
-                    self.newmessage.emit(received_text)
+
+                    self.newmessage.emit(received_text) #sends message to main thread
+                    
+                    if not self.running:
+                        break
       
             except Exception as e:
                 self.error.emit(e)
            
     
-    def receiver_close(self)-> None:
+    def receiver_close(self)-> None: #stops the receiver
+        self.running = False
         self.wifi_connection.close()   
 
 
@@ -40,16 +42,12 @@ def send_message(userID,recipientID,contents,db) ->bool:
     mac_address = db.get_mac_address(recipientID,userID)
     if mac_address is None:
         return False,'mac address not found'
-    # Get the ARP table
+    # Get the address lookup table
     arp_table = os.popen('arp -a').read()
-    print(arp_table)
     # Search for the MAC address in the arp table
     for line in arp_table.splitlines():
-        print(line)
-        if mac_address.lower() in line.lower() or mac_address.lower().replace(':','-') in line.lower():# Extract the IP address from arp table
-            
-            ip_match = re.search(r'\d+\.\d+\.\d+\.\d+', line)
-            print(ip_match)
+        if mac_address.lower() in line.lower() or mac_address.lower().replace(':','-') in line.lower(): #finds the line with the right macaddress in
+            ip_match = re.search(r'\d+\.\d+\.\d+\.\d+', line) #pulls the ip address out the line
             if ip_match:
                 local_ip_address = ip_match.group()
             
@@ -57,16 +55,14 @@ def send_message(userID,recipientID,contents,db) ->bool:
         return False,'device not found'
  
     message = (f'{userID}:{contents}').encode('ascii') # attaches userID            
-    wifi_connection = socket.socket()
+    wifi_connection = socket.socket() #starts sending socket
     port = 12345
     try:
-        wifi_connection.connect((local_ip_address, port))
-        wifi_connection.send(message)
-        # close the connection
-        wifi_connection.close()
+        wifi_connection.connect((local_ip_address, port)) #connects to receiver
+        wifi_connection.send(message) #transmits message
+        wifi_connection.close() # close the connection
         return True,''
     except ConnectionRefusedError:
-        print('client not online')
         return False, 'message failed to send'
     
 

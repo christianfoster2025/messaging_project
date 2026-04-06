@@ -1,4 +1,3 @@
-from .login import login_screen
-from .setup import programme_setup
-from .signup import signup_screen
-from .start import start_screen
+from .login import login_window
+from .signup import signup_window
+from .start import start_window
