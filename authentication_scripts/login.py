@@ -40,15 +40,15 @@ class login_window(QMainWindow):
         if len(username.strip()) ==0 or len(password.strip()) == 0: #checks that they arent empty or just have empty space in
             self.ui.errorlabel.setText('missing field try again')
             self.fail_count +=1
-        credential_check = self.database.loginquery(username,hashed_password)
-        if not credential_check:
+        elif not self.database.loginquery(username,hashed_password): #queries logins in database
             self.ui.errorlabel.setText('invalid credentials')
+            self.fail_count +=1
         else:
-            self.credentials = (username,password)
+            self.credentials = (username,password) #adds successful credentials to an attribute to be accessed by the main programme
             self.success = True
             self.close()
-        if self.fail_count >=5:
-            QMessageBox.warning(self,'Too many failed attempts.')
+        if self.fail_count >=5: #ends the attempt if too many failed ones have been made
+            QMessageBox.warning(self,'Fail','Too many failed attempts.')
             self.close()
     
 if __name__ == '__main__':

@@ -26,9 +26,15 @@ class signup_window(QMainWindow):
         
         fail = False
        
-        if len(username.strip())==0 or len(password.strip())==0 or len(confirmpassword.strip())==0: #length/whitespace check
+        if len(username.strip())==0 or len(password.strip())==0 or len(confirmpassword.strip())==0: #length check
             fail = True
             self.ui.errorlabel.setText('Missing fields')
+            
+        elif ' ' in username or ' ' in password: #checking for whitespaces
+            fail = True 
+            self.ui.errorlabel.setText('Whitespaces are not permitted')
+            
+            
         elif password != confirmpassword: #checking passwords match
             fail = True
             self.ui.errorlabel.setText('Passwords don\'t match')
@@ -49,7 +55,7 @@ class signup_window(QMainWindow):
             self.fail_count +=1
         
         if self.fail_count >=5:
-            QMessageBox.warning(self,'Too many failed attempts.')
+            QMessageBox.warning(self,'Fail','Too many failed attempts.')
             self.close()
 
     def closeEvent(self, event): #makes UI closes handle properly so runtime can be passed onto the next UI

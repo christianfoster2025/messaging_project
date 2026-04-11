@@ -20,8 +20,6 @@ class message_receiver(QObject):
                 while True:
                     c, addr = self.wifi_connection.accept() #when sender tries to connect automatically connects and receivers data
                     received_text =c.recv(1024).decode('utf-8')
-                    
-
                     self.newmessage.emit(received_text) #sends message to main thread
                     
                     if not self.running:

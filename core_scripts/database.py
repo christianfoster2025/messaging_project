@@ -21,7 +21,27 @@ class databaseinterfacer(): #class that handles all interfacing with the databas
         self.userid:str = '' #will be used to keep userid to stop it being called unnecessarily
         self.contactlist:list = [] #cached contact list
         self.contactupdate = False   #tracks if new contact list needs to be pulled down
-            
+       
+       
+       
+       
+    #===========================================#
+    #DATABASE METHOD LAYOUT
+    
+    #def functionname(variables:type) -> type returned(usually boolean):
+    #   try:
+    #       main code
+    #       if successful:
+    #           return True
+    #       else: 
+    #           return False
+    #   except Exception as e:
+    #       print(e) outputs the error from the try into the terminal for debugging
+    #       return False
+    
+    #=========================================#
+    
+       
     def loginquery(self,username:str,hashed_password:str) -> bool: #takes user and passwork and returns true if present in db
         try:
             self.interfacer.execute('SELECT * FROM users WHERE username LIKE ? AND password like ?;',(username,hashed_password))

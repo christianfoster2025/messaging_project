@@ -94,20 +94,23 @@ class main_window(QMainWindow):
    
     def send(self) -> None: #ingests all information to be sent, sends it, stores message in database
         unencrypted_text = self.ui.message_input.toPlainText()
-        encrypted_text = encrypt(unencrypted_text) #encrypts text
-        recipientID = self.current_contact_ID
-        success,error = send_message(self.userID,recipientID,encrypted_text,self.database) #uses network function to send message
-        if success:
-            state = 'sent'
-
-            if self.database.store_message(self.userID,recipientID,encrypted_text,state): #stores message in db
-                self.ui.message_input.setText('')
-                self.main_pane_update()
-
-            else: 
-                QMessageBox.warning(self,'Error: message not stored in database') #errors displayed as popups
+        if unencrypted_text.isspace() or unencrypted_text.isempty():
+            QMessageBox.warning(self,'Error',f'Error: no text entered \nPlease try again.')
         else:
-            QMessageBox.warning(self,'Error',f'Error: {error} \nPlease try again.')
+            encrypted_text = encrypt(unencrypted_text) #encrypts text
+            recipientID = self.current_contact_ID
+            success,error = send_message(self.userID,recipientID,encrypted_text,self.database) #uses network function to send message
+            if success:
+                state = 'sent'
+
+                if self.database.store_message(self.userID,recipientID,encrypted_text,state): #stores message in db
+                    self.ui.message_input.setText('')
+                    self.main_pane_update()
+
+                else: 
+                    QMessageBox.warning(self,'Error','Error: message not stored in database') #errors displayed as popups
+            else:
+                QMessageBox.warning(self,'Error',f'Error: {error} \nPlease try again.')
      
     def signout(self):
         self.end = False
